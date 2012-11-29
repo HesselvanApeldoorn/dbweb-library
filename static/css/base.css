@@ -1,0 +1,55 @@
+body 
+{
+    margin: 0px;
+    padding: 0px;
+    font-family: Calibri,Verdana, serif; 
+    background-color: lemonchiffon;
+}
+
+.header
+{
+    height: 30px;
+    background-color: wheat;
+}
+
+.header a 
+{
+    float:right;
+    color: black;
+}
+
+.container
+{
+    clear: both;
+    width: 1024px;
+    margin: auto;
+}
+
+.menu, .content
+{
+    margin-top: 10px;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;
+    position: relative;
+    float: left;
+    border-radius: 15px;
+    background-color: #FFF48F;
+}
+
+.menu 
+{
+    width: 200px;
+    margin-right: 24px;
+
+}
+.menu li
+{
+    list-style: none;
+}
+
+.content
+{
+    width: 800px;
+    
+}
