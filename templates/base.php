@@ -1,4 +1,4 @@
-<html>
+<html> 
     <head>
         <?php require_once 'ti.php' ?>
          <link href="../static/css/base.css" rel="stylesheet" type="text/css">
