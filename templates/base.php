@@ -1,6 +1,11 @@
-<html> 
+<?php require_once 'ti.php' ?>
+<!-- {
+    $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
+} catch(PDOException $e) {
+    echo $e->getMessage();
+} -->
+<html>
     <head>
-        <?php require_once 'ti.php' ?>
          <link href="../static/css/base.css" rel="stylesheet" type="text/css">
     </head>
     <body>

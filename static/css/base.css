@@ -10,6 +10,7 @@ body
 {
     height: 30px;
     background-color: wheat;
+    border-bottom: 1px solid white;
 }
 
 .header a 
