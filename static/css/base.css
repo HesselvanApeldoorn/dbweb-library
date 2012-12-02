@@ -26,7 +26,7 @@ body
     margin: auto;
 }
 
-.menu, .content
+.menu
 {
     margin-top: 10px;
     -webkit-box-shadow: 0 6px 6px -6px black;
@@ -35,14 +35,13 @@ body
     position: relative;
     float: left;
     border-radius: 15px;
-    background-color: #FFF48F;
 }
 
 .menu 
 {
     width: 200px;
     margin-right: 24px;
-
+    background-color: #FFF48F;
 }
 .menu li
 {
@@ -52,5 +51,52 @@ body
 .content
 {
     width: 800px;
-    
+    position: relative;
+    float: left;
+
+}
+
+/********************************************* Home page styling *********************************************/
+
+.library, .notifications {
+    margin-top: 10px;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;
+    position: relative;
+    float: left;
+    background-color: #FFF48F;
+    border-radius: 15px;
+}
+
+
+.library {
+    width: 500px;
+    margin-right: 10px;
+}
+
+
+.notifications {
+    width: 290px;
+}
+
+.notification {
+    background-color: white;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;
+    position: relative;
+    float: left;
+    clear: both;
+    border-radius: 15px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.notifyHeader {
+    background-color: wheat;
+    border-bottom: 1px solid white;
+    margin: 0px;
+    padding: 0px;
 }
