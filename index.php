@@ -1,11 +1,12 @@
 <?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('header');
-        echo "Home";
+        echo "Welcome, Cagri, you are here: Home";
 endblock() ?>
 <?php startblock('content');
     echo "<div class='library'>";
         echo "<div class='blockHeader'> <h2>Library</h2></div><br>";
+        echo "<div class='blockContent'>";
             echo "<div class='search_bar'>";
                 echo "Search for books:<input type='text' name='dff_keyword' size='30' maxlength='50'>";
                 echo "<input type='submit' value='Find'>";
@@ -43,12 +44,13 @@ endblock() ?>
                     }
                 echo "</table>";
             echo "</div>";
+        echo "</div>";
     echo "</div>";
     echo "<div class='notifications'>";
         echo "<div class='blockHeader'> <h2>Notifications</h2></div>";
         $query = $con->prepare('select * from Notification');
         $query->execute();
-        echo "<div class='notifyContent'>";
+        echo "<div class='blockContent'>";
             foreach($query as $notification) {
                 echo "<div class='notification'>";
                 echo "<strong>Notification:</strong><br>";

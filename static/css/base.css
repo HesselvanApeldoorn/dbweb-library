@@ -71,7 +71,6 @@ body {
 }
 
 /********************************************* Home page styling *********************************************/
-
 .library, .notifications {
     background-color: #FFF48F;
     border-radius: 15px;
@@ -93,7 +92,7 @@ body {
     width: 290px;
 }
 
-.notifyContent {
+.blockContent {
     padding: 10px;
 }
 
