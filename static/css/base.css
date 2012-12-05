@@ -86,7 +86,6 @@ body {
 
 .library {
     margin-right: 10px;
-    padding: 10px;
     width: 480px;
 }
 
@@ -112,7 +111,7 @@ body {
     position: relative;
 }
 
-.notifyHeader {
+.blockHeader {
     background-color: wheat;
     border-bottom: 1px solid gray;    
     border-top-left-radius: 15px 15px;

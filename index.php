@@ -5,12 +5,13 @@
 endblock() ?>
 <?php startblock('content');
     echo "<div class='library'>";
+        echo "<div class='blockHeader'> <h2>Library</h2></div><br>";
             echo "<div class='search_bar'>";
                 echo "Search for books:<input type='text' name='dff_keyword' size='30' maxlength='50'>";
                 echo "<input type='submit' value='Find'>";
             echo "</div>";
             echo "<div class='personal_library'>";
-                echo "<hr/><h2>Personal library</h2>";
+                echo "<hr/><h4>Personal library</h4>";
                 echo "<table border='1'>"; 
                     echo "<th> Name</th>";
                     echo "<th> Author</th>";
@@ -23,7 +24,7 @@ endblock() ?>
                 echo "</table>";
             echo "</div>";
             echo "<div class='loaning'>";
-                echo "<hr/><h2>Loaning</h2>";
+                echo "<hr/><h4>Loaning</h4>";
                 echo "<table border='1'>"; 
                     echo "<th>Book</th>";
                     echo "<th>Lent from</th>";
@@ -44,7 +45,7 @@ endblock() ?>
             echo "</div>";
     echo "</div>";
     echo "<div class='notifications'>";
-        echo "<div class='notifyHeader'> <h2>Notifications</h2></div>";
+        echo "<div class='blockHeader'> <h2>Notifications</h2></div>";
         $query = $con->prepare('select * from Notification');
         $query->execute();
         echo "<div class='notifyContent'>";
