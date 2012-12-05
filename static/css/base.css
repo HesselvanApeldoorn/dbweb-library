@@ -1,43 +1,46 @@
 /********************************************* Base styling *********************************************/
 body {
+    background-color: lemonchiffon;
+    font-family: Calibri,Verdana, serif; 
     margin: 0px;
     padding: 0px;
-    font-family: Calibri,Verdana, serif; 
-    background-color: lemonchiffon;
 }
 
 .header {
-    height: 30px;
     background-color: wheat;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid gray;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
 }
 
 .header a {
-    float: right;
     color: black;
+    float: right;
 }
 
 .container {
     clear: both;
-    width: 1024px;
     margin: auto;
+    width: 1024px;
 }
 
-.menu {
+.menu {  
+    border-radius: 15px;
+    float: left;
+    font-size: 1.2em;
+    margin-right: 24px;
     margin-top: 10px;
     position: relative;
-    float: left;
-    border-radius: 15px;
     width: 200px;
-    margin-right: 24px;
-    font-size: 1.2em;
 }
 
 .menu ul {
     list-style-type: none;
-    padding: 0;
     margin-left: 0;
-    margin-top: 0px;
+    margin-top: 0px;  
+    padding: 0;
 }
 
 .menu li {
@@ -46,40 +49,38 @@ body {
     -moz-box-shadow:    0 6px 6px -6px black;
     box-shadow:         0 6px 6px -6px black;
     border-radius: 15px;
-    text-align:center;
     margin: 10px;
     margin-top: 0px;
-    padding: 8px;
+    padding: 8px;    
+    text-align:center;
 }
 
-.menu a 
-{
-  text-decoration: none;
-  color: black;
+.menu a {  
+    color: black;
+    text-decoration: none;
 }
 
-.menu a:hover
-{
-  text-decoration: underline;
+.menu a:hover {
+    text-decoration: underline;
 }
 
 .content {
-    width: 800px;
-    position: relative;
     float: left;
+    position: relative; 
+    width: 800px;
 }
 
 /********************************************* Home page styling *********************************************/
 
 .library, .notifications {
-    margin-top: 10px;
-    -webkit-box-shadow: 0 6px 6px -6px black;
-    -moz-box-shadow:    0 6px 6px -6px black;
-    box-shadow:         0 6px 6px -6px black;
-    position: relative;
-    float: left;
     background-color: #FFF48F;
     border-radius: 15px;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;  
+    float: left;
+    margin-top: 10px;
+    position: relative;
 }
 
 
@@ -98,23 +99,26 @@ body {
 }
 
 .notification {
-    background-color: white;
+    background-color: white;  
+    border-radius: 15px;   
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
     box-shadow:         0 6px 6px -6px black;
-    position: relative;
     clear: both;
-    border-radius: 15px;
     margin-top: 10px;
     margin-right: 10px;
     margin-left: 10px;
-    padding: 5px;
+    padding: 5px;   
+    position: relative;
 }
 
 .notifyHeader {
     background-color: wheat;
-    border-bottom: 1px solid black;
-    margin: 0px;
+    border-bottom: 1px solid gray;    
+    border-top-left-radius: 15px 15px;
+    border-top-right-radius: 15px 15px;
+    display:table;
     padding: 0px;
     padding-left: 10px;
+    width: 100%;
 }
