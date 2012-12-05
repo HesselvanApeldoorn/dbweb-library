@@ -1,59 +1,72 @@
-body 
-{
+/********************************************* Base styling *********************************************/
+body {
     margin: 0px;
     padding: 0px;
     font-family: Calibri,Verdana, serif; 
     background-color: lemonchiffon;
 }
 
-.header
-{
+.header {
     height: 30px;
     background-color: wheat;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid black;
 }
 
-.header a 
-{
-    float:right;
+.header a {
+    float: right;
     color: black;
 }
 
-.container
-{
+.container {
     clear: both;
     width: 1024px;
     margin: auto;
 }
 
-.menu
-{
+.menu {
     margin-top: 10px;
-    -webkit-box-shadow: 0 6px 6px -6px black;
-    -moz-box-shadow:    0 6px 6px -6px black;
-    box-shadow:         0 6px 6px -6px black;
     position: relative;
     float: left;
     border-radius: 15px;
-}
-
-.menu 
-{
     width: 200px;
     margin-right: 24px;
-    background-color: #FFF48F;
-}
-.menu li
-{
-    list-style: none;
+    font-size: 1.2em;
 }
 
-.content
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin-left: 0;
+    margin-top: 0px;
+}
+
+.menu li {
+    background-color: #FFF48F;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;
+    border-radius: 15px;
+    text-align:center;
+    margin: 10px;
+    margin-top: 0px;
+    padding: 8px;
+}
+
+.menu a 
 {
+  text-decoration: none;
+  color: black;
+}
+
+.menu a:hover
+{
+  text-decoration: underline;
+}
+
+.content {
     width: 800px;
     position: relative;
     float: left;
-
 }
 
 /********************************************* Home page styling *********************************************/
@@ -71,13 +84,17 @@ body
 
 
 .library {
-    width: 500px;
     margin-right: 10px;
+    padding: 10px;
+    width: 480px;
 }
-
 
 .notifications {
     width: 290px;
+}
+
+.notifyContent {
+    padding: 10px;
 }
 
 .notification {
@@ -86,17 +103,18 @@ body
     -moz-box-shadow:    0 6px 6px -6px black;
     box-shadow:         0 6px 6px -6px black;
     position: relative;
-    float: left;
     clear: both;
     border-radius: 15px;
     margin-top: 10px;
     margin-right: 10px;
     margin-left: 10px;
+    padding: 5px;
 }
 
 .notifyHeader {
     background-color: wheat;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid black;
     margin: 0px;
     padding: 0px;
+    padding-left: 10px;
 }
