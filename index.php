@@ -6,10 +6,11 @@ endblock() ?>
 <?php startblock('content');
     echo "<div class='library'>";
             echo "<div class='search_bar'>";
-                echo "Search:<input type='text' name='dff_keyword' size='30' maxlength='50'>";
+                echo "Search for books:<input type='text' name='dff_keyword' size='30' maxlength='50'>";
                 echo "<input type='submit' value='Find'>";
             echo "</div>";
             echo "<div class='personal_library'>";
+                echo "<hr/><h2>Personal library</h2>";
                 echo "<table border='1'>"; 
                     echo "<th> Name</th>";
                     echo "<th> Author</th>";
@@ -22,6 +23,24 @@ endblock() ?>
                 echo "</table>";
             echo "</div>";
             echo "<div class='loaning'>";
+                echo "<hr/><h2>Loaning</h2>";
+                echo "<table border='1'>"; 
+                    echo "<th>Book</th>";
+                    echo "<th>Lent from</th>";
+                    echo "<th>Start date</th>";
+                    echo "<th>end date</th>";
+                    $query = $con->prepare('select * from Loaning');
+                    $query->execute();
+                    foreach($query as $loaning) {
+                        $query2 = $con->prepare("select * from Document where docID={$loaning['docID']}");
+                        $query2->execute();
+                        $docName = $query2->fetch();  
+                        echo "<tr><td>{$docName['document_name']}</td>";
+                        echo "<td>{$loaning['fromUser']}</td>";
+                        echo "<td>{$loaning['start_date']}</td>";
+                        echo "<td>{$loaning['end_date']}</td></tr>";
+                    }
+                echo "</table>";
             echo "</div>";
     echo "</div>";
     echo "<div class='notifications'>";
