@@ -15,7 +15,7 @@ try {
         <div class='header'>
             <?php startblock('header') ?>
             <?php endblock() ?>
-            <a href=''>Log out</a>
+            <a id='logout' href=''>Log out</a>
         </div>
 
         <div class='container'>
