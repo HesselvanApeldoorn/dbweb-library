@@ -2,11 +2,32 @@
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php 
 if ($_SERVER['REQUEST_METHOD']=='POST') {
-    $sql = "insert into Document values(13,'ok','ok','ok',1,'23-45')";
+    if ($_REQUEST['visible']=='visible') {
+        $visible=1;
+    } else {
+        $visible=0;
+    }
+    $sql = "select count(*) from Document";
     $query = $con->prepare($sql);
     $query->execute();
-    header("location:library.php");
-} else {
+    $docID= $query->fetchColumn()+1;
+
+    $sql = "select * from PaperDoc where docID =?";
+    $query = $con->prepare($sql);
+    $query->execute(array($_GET['book']));
+    $paperDoc = $query->fetch();
+    if (isset($paperDoc['docID'])) {
+        $sql = "update Document set author=?, description=?, document_name=?, visible=?, isbn=? where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn'], $_GET['book']));
+    } else {
+        $sql = "insert into Document values(?, ?, ?, ?, ?, ?)";
+        $query = $con->prepare($sql);
+        $query->execute(array("$docID,'{$_REQUEST['author']}','{$_REQUEST['description']}','{$_REQUEST['document_name']}',$visible,'{$_REQUEST['isbn']}'"));
+    }
+    echo "done";
+    //header("location:library.php");
+} else { //method is GET
     startblock('header');
         echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='library.php'>Library</a> &raquo; Document";
     endblock();
@@ -21,25 +42,25 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                 echo "<form method='post'>";
                     echo "<hr/>";
                     echo "<h4>Name</h4>";
-                    echo "<input type='text' value='{$book['document_name']}'/>";
+                    echo "<input type='text' name='document_name' value='{$book['document_name']}'/>";
                     echo "<hr/>";
                     echo "<h4>Author</h4>";
-                    echo "<input type='text' value='{$book['author']}'/>";
+                    echo "<input type='text' name='author' value='{$book['author']}'/>";
                     echo "<hr/>";
                     echo "<h4>Description</h4>";
-                    echo "<textarea>{$book['description']}</textarea>";
+                    echo "<textarea name='description'>{$book['description']}</textarea>";
                     echo "<hr/>";
                     echo "<h4>Visibility</h4>";
                     if ($book['visible']) {
-                        echo "<input type = 'radio' checked name = 'visible'>visible<br/>";
-                        echo "<input type = 'radio' name = 'visible'>not visible";
+                        echo "<input type = 'radio' checked name = 'visible' value='visible' >visible<br/>";
+                        echo "<input type = 'radio' name = 'visible' value='notvisible' >not visible";
                     } else {
-                        echo "<input type = 'radio' name = 'visible'>visible<br/>";
-                        echo "<input type = 'radio' checked name = 'visible'>not visible";
+                        echo "<input type = 'radio' name = 'visible' value='visible' >visible<br/>";
+                        echo "<input type = 'radio' checked name = 'visible' value='notvisible' >not visible";
                     }
                     echo "<hr/>";
                     echo "<h4>ISBN</h4>";
-                    echo "<input type='text' value='{$book['isbn']}'/>";
+                    echo "<input type='text' name='isbn' value='{$book['isbn']}'/>";
                     echo "<hr/>";
                     $sql = "select * from PaperDoc where docID =?";
                     $query = $con->prepare($sql);
@@ -47,7 +68,13 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                     $paperDoc = $query->fetch();
                     if (isset($paperDoc['docID'])) {
                         echo "<h4>Quality</h4>";
-                        echo $paperDoc['state'];
+                        echo "Current: ".$paperDoc['state']."</br>";
+                        echo "<select name='state'>";
+                            echo "<option value='new'>new</option>";
+                            echo "<option value='good'>good</option>";
+                            echo "<option value='decent'>decent</option>";
+                            echo "<option value='poor'>poor</option>";
+                        echo "</select>";
                     } else {
                         $sql = "select * from ElectronicDoc where docID =?";
                         $query = $con->prepare($sql);
