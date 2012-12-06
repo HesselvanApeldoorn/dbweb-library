@@ -24,7 +24,7 @@ endblock() ?>
                         if ($i==0) {
                             $idvar='odd';
                         }
-                        echo "<tr id='$idvar' ><td><a href='book.php?{$document['document_name']}'>{$document['document_name']}</a></td>";
+                        echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
                         echo "<td>{$document['author']}</td>";
                         echo "<td>{$document['description']}</td>";
                         echo "<td>{$document['isbn']}</td>";
