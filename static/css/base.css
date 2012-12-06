@@ -20,11 +20,7 @@ body {
     float: right;
 }
 
-.container {
-    clear: both;
-    margin: auto;
-    width: 1024px;
-}
+/*********** Menu styling ***********/
 
 .menu {  
     border-radius: 15px;
@@ -64,11 +60,55 @@ body {
     text-decoration: underline;
 }
 
+/*********** Blocks styling ***********/
+
 .content {
     float: left;
     position: relative; 
     width: 800px;
 }
+
+.main {
+    background-color: #FFF48F;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;  
+    float: left;
+    margin-top: 10px;
+    position: relative;
+}
+
+.container {
+    clear: both;
+    margin: auto;
+    width: 1024px;
+}
+
+/*********** Table styling ***********/
+
+th {
+    color: white;
+    background-color: black;
+}
+
+tr#even td{
+    background-color: lemonchiffon;
+}
+
+td, th {
+    border: 1px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+/*td #1 {
+    background-color: 
+}*/
 
 /********************************************* Home page styling *********************************************/
 .library, .notifications {

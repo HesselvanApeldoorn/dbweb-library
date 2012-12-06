@@ -1,0 +1,5 @@
+Functionalities that will be added after the prototype:
+User authentication
+Uploading of documents
+Paging of documents/loanings (there will be 20 documents per page for exameple, instead of just all of them on 1 page)
+
