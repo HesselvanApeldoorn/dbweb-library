@@ -21,8 +21,8 @@ try {
         <div class='container'>
             <div class='menu'>
                 <ul>
-                    <a href='../search.php'><li> Search </li> </a>
-                    <a href=''><li> Personal library </li> </a>
+                    <a href='search.php'><li> Search </li> </a>
+                    <a href='library.php'><li> Personal library </li> </a>
                     <a href=''><li> Notifications </li> </a>
                     <a href=''><li> Settings </li> </a>
                 </ul>
