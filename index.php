@@ -8,8 +8,10 @@ endblock() ?>
         echo "<div class='blockHeader'> <h2>Library</h2></div><br>";
         echo "<div class='blockContent'>";
             echo "<div class='search_bar'>";
-                echo "Search for books:<input type='text' name='dff_keyword' size='30' maxlength='50'>";
-                echo "<input type='submit' value='Find'>";
+                echo "<form method='post' action= 'search.php?'>";
+                echo "Search for books:<input type='text' name='searchText' size='30'>";
+                echo "<input type='submit' name='searchButton' value='Find'>";
+                echo "</form>";
             echo "</div>";
             echo "<div class='personal_library'>";
                 echo "<hr/><h4>Personal library</h4>";
@@ -19,7 +21,7 @@ endblock() ?>
                     $query = $con->prepare('select * from Document');
                     $query->execute();
                     foreach($query as $document) {
-                        echo "<tr><td>{$document['document_name']}</td>";
+                        echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
                         echo "<td>{$document['author']}</td></tr>";
                     }
                 echo "</table>";
@@ -37,8 +39,8 @@ endblock() ?>
                         $query2 = $con->prepare("select * from Document where docID={$loaning['docID']}");
                         $query2->execute();
                         $docName = $query2->fetch();  
-                        echo "<tr><td>{$docName['document_name']}</td>";
-                        echo "<td>{$loaning['fromUser']}</td>";
+                        echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
+                        echo "<td>".substr($loaning['fromUser'],0,10)."...</td>";
                         echo "<td>{$loaning['start_date']}</td>";
                         echo "<td>{$loaning['end_date']}</td></tr>";
                     }

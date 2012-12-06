@@ -17,8 +17,8 @@ endblock() ?>
                     } else {
                         $selected = $_REQUEST['searchCriteria'];
                     }    
-                    $options = array("","","","", "");
-                    $values = array("all","document_name", "author", "isbn", "description");
+                    $options = array("","","","", "","");
+                    $values = array("all","document_name", "author", "isbn", "description", "category");
                     for($i=0;$i<sizeof($options);$i++) {
                         if($selected==$values[$i]) {
                             $options[$i] =  "selected='selected'";
@@ -30,16 +30,24 @@ endblock() ?>
                             <option value='author' $options[2]>Author</option>
                             <option value='isbn' $options[3]>ISBN</option>
                             <option value='description' $options[4]>Description</option>
+                            <option value='category' $options[5]>Category</option>
                         </select>";
                     echo "<input type='submit' name='searchButton' value='Find'>";
                 echo "</form>";
             echo "</div>";
             if(isset($_REQUEST['searchButton'])) {
-                if($_REQUEST['searchCriteria']!='all' && preg_match("/^(document_name|author|isbn|description)$/", $_REQUEST['searchCriteria'], $match)) {
+                if(!isset($_REQUEST['searchCriteria'])) {
+                    $selected = 'all';
+                } else {
+                    $selected = $_REQUEST['searchCriteria'];
+                }
+                if($selected!='all' && $selected!='category' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) {
                     $crit = $match[1];     
                     $sql =  "select * from Document where $crit like ?";
-                } else if($_REQUEST['searchCriteria']=='all') {
+                } else if($selected=='all') {
                     $sql =  "select * from Document where concat(document_name, author, description, ifnull(isbn, '')) like ?";
+                } else if($selected=='category') {
+                    $sql = "select * from Document inner join (SELECT docID from DocCategory where category like ?) as CAT on Document.docID=CAT.docID";
                 } else {
                     echo "Hacking attempt";
                 }
@@ -59,9 +67,13 @@ endblock() ?>
                             if ($i==0) {
                                 $idvar='odd';
                             }
-                            echo "<tr id='$idvar' ><td><a href='book.php?{$row['document_name']}'>{$row['document_name']}</a></td>";
+                            echo "<tr id='$idvar' ><td><a href='book.php?book={$row['docID']}'>{$row['document_name']}</a></td>";
                             echo "<td>{$row['author']}</td>";
-                            echo "<td>{$row['description']}</td>";
+                            $desc = "<td>".substr($row['description'],0,20);
+                            if(strlen($row['description'])>20) {
+                                $desc = $desc . "..."; 
+                            } 
+                            echo $desc ."</td>";
                             echo "<td>{$row['isbn']}</td>";
                             echo "</tr>";
                         }
