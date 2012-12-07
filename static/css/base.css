@@ -70,6 +70,8 @@ body {
 
 .main {
     background-color: #FFF48F;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
     border-radius: 15px;
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
@@ -84,6 +86,15 @@ body {
     clear: both;
     margin: auto;
     width: 1024px;
+}
+
+.search_bar input[type="text"] {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border:solid 1px black;
+    width:100%;
+    padding:5px;
 }
 
 /*********** Table styling ***********/
@@ -114,6 +125,8 @@ table {
 /********************************************* Home page styling *********************************************/
 .library, .notifications {
     background-color: #FFF48F;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
     border-radius: 15px;
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
@@ -139,7 +152,9 @@ table {
 
 .notification {
     background-color: white;  
-    border-radius: 15px;   
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
     box-shadow:         0 6px 6px -6px black;

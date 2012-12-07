@@ -9,7 +9,7 @@ endblock() ?>
         echo "<div class='blockContent'>";
             echo "<div class='search_bar'>";
                 echo "<form method='post' action= 'search.php?'>";
-                echo "Search for books:<input type='text' name='searchText' size='30'>";
+                echo "<input type='text' class='search_bar' name='searchText' value='Search for books' onfocus='if(this.value == \"Search for books\") { this.value = \"\"; }' onblur='if(this.value == \"\") { this.value = \"Search for books\"; }'>";
                 echo "<input type='submit' name='searchButton' value='Find'>";
                 echo "</form>";
             echo "</div>";

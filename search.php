@@ -11,7 +11,7 @@ endblock() ?>
             /* Search bar */
             echo "<div class='search_bar'>";
                 echo "<form method='post'>";
-                    echo "<input type='text' name='searchText' size='100%'>";
+                    echo "<input type='text' name='searchText' value='Search for books' onfocus='if(this.value == \"Search for books\") { this.value = \"\"; }' onblur='if(this.value == \"\") { this.value = \"Search for books\"; }'>";
                    
                     if(!isset($_REQUEST['searchCriteria'])) {
                         $selected = "all";
