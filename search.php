@@ -8,6 +8,7 @@ endblock() ?>
     echo "<div class='main'>";
         echo "<div class='blockHeader'><h2>Search</h2></div><br>";
         echo "<div class='blockContent'>";
+            /* Search bar */
             echo "<div class='search_bar'>";
                 echo "<form method='post'>";
                     echo "<input type='text' name='searchText' size='100%'>";
@@ -35,28 +36,32 @@ endblock() ?>
                     echo "<input type='submit' name='searchButton' value='Find'>";
                 echo "</form>";
             echo "</div>";
+            /* Handling searches */
             if(isset($_REQUEST['searchButton'])) {
-                if(!isset($_REQUEST['searchCriteria'])) {
+                if(!isset($_REQUEST['searchCriteria'])) { //This is needed if the user searches from the home page
                     $selected = 'all';
                 } else {
                     $selected = $_REQUEST['searchCriteria'];
                 }
-                if($selected!='all' && $selected!='category' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) {
+                if($selected!='all' && $selected!='category' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) { //the user searches on (name||author||isbn||description)
                     $crit = $match[1];     
-                    $sql =  "select * from Document where $crit like ?";
-                } else if($selected=='all') {
-                    $sql =  "select * from Document where concat(document_name, author, description, ifnull(isbn, '')) like ?";
-                } else if($selected=='category') {
-                    $sql = "select * from Document inner join (SELECT docID from DocCategory where category like ?) as CAT on Document.docID=CAT.docID";
+                    $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID where $crit like ? AND visible = 1 group by Document.docID";
+                } else if($selected=='all') { // the user searches on everything
+                    $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID  where concat(category, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1 group by Document.docID";
+                } else if($selected=='category') {// the user searches on category
+                    $sql = "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join (SELECT * from DocCategory where category like ?) as CAT on Document.docID=CAT.docID where visible = 1 group by Document.docID";
                 } else {
                     echo "Hacking attempt";
                 }
-                $q = $con->prepare($sql);
+                $q = $con->prepare($sql); // Group concat is used so multiple categories are shown in the same row.
                 $q->execute(array("%{$_REQUEST['searchText']}%"));
+                /* Show search results */
                 if($q->rowCount()>0) {
+                    echo $q->rowCount() . " search results.<br/>";
                     echo "<table>"; 
                         echo "<th> Name</th>";
                         echo "<th> Author</th>";
+                        echo "<th> Category</th>";
                         echo "<th> Description </th>";
                         echo "<th> ISBN(optional)</th>";
                         $i=0;
@@ -69,6 +74,7 @@ endblock() ?>
                             }
                             echo "<tr id='$idvar' ><td><a href='book.php?book={$row['docID']}'>{$row['document_name']}</a></td>";
                             echo "<td>{$row['author']}</td>";
+                            echo "<td>{$row['categoryConcat']}</td>";
                             $desc = "<td>".substr($row['description'],0,20);
                             if(strlen($row['description'])>20) {
                                 $desc = $desc . "..."; 
