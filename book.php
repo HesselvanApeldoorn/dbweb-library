@@ -1,6 +1,6 @@
 <?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
-<?php 
+<?php
 if ($_SERVER['REQUEST_METHOD']=='POST') {
     if ($_REQUEST['visible']=='visible') {
         $visible=1;
@@ -20,10 +20,36 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $sql = "update Document set author=?, description=?, document_name=?, visible=?, isbn=? where docID=?";
         $query = $con->prepare($sql);
         $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn'], $_GET['book']));
+        $sql = "update PaperDoc set state=? where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($_REQUEST['state'], $_GET['book']));
     } else {
+        echo $_REQUEST['distributable'];
+        if ($_REQUEST['distributable']=='distributable') {
+            $distributable=1;
+        } else {
+            $distributable=0;
+        }
+        $sql = "select * from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array("{$_GET['book']}"));
+
+        $sql = "delete from 'Document' where 'docID'=?";
+        $query = $con->prepare($sql);
+        $query->execute(array("{$_GET['book']}"));
+
         $sql = "insert into Document values(?, ?, ?, ?, ?, ?)";
         $query = $con->prepare($sql);
         $query->execute(array("$docID,'{$_REQUEST['author']}','{$_REQUEST['description']}','{$_REQUEST['document_name']}',$visible,'{$_REQUEST['isbn']}'"));
+
+        $sql = "update ElectronicDocCopies set docID=? where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array("$docID, ${_GET['book']}"));
+
+        $sql = "update ElectronicDoc set docID=?, distributable=? where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array("$docID, $distributable, {$_GET['book']}"));
+
     }
     echo "done";
     //header("location:library.php");
@@ -66,6 +92,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                     $query = $con->prepare($sql);
                     $query->execute(array($_GET['book']));
                     $paperDoc = $query->fetch();
+                    echo "<hr/>";
+                    echo "<h4>Categories</h4>";
+                    echo $electronicDoc['content'];
                     if (isset($paperDoc['docID'])) {
                         echo "<h4>Quality</h4>";
                         echo "Current: ".$paperDoc['state']."</br>";
@@ -82,11 +111,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                         $electronicDoc = $query->fetch();
                         echo "<h4>Distributable</h4>";
                         if ($electronicDoc['distributable']) {
-                            echo "<input type = 'radio' checked name = 'distributable'>distributable<br/>";
-                            echo "<input type = 'radio' name = 'distributable'>not distributable";
+                            echo "<input type = 'radio' checked name = 'distributable'value='distributable' />distributable<br/>";
+                            echo "<input type = 'radio' name = 'distributable' value='notdistributable' />not distributable";
                         } else {
-                            echo "<input type = 'radio' name = 'distributable'>distributable<br/>";
-                            echo "<input type = 'radio' checked name = 'distributable'>not distributable";
+                            echo "<input type = 'radio' name = 'distributable' value='distributable' />distributable<br/>";
+                            echo "<input type = 'radio' checked name = 'distributable' value='notdistributable' />not distributable";
                         }
                         echo "<hr/>";
                         echo "<h4>Content</h4>";

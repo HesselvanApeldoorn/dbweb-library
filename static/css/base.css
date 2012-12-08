@@ -75,7 +75,7 @@ body {
     border-radius: 15px;
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
-    box-shadow:         0 6px 6px -6px black;  
+    box-shadow:         0 6px 6px -6px black;
     float: left;
     margin-top: 10px;
     position: relative;
@@ -119,7 +119,7 @@ table {
 }
 
 /*td #1 {
-    background-color: 
+    background-color:
 }*/
 
 /********************************************* Home page styling *********************************************/
