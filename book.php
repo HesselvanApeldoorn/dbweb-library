@@ -34,9 +34,17 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $query = $con->prepare($sql);
         $query->execute(array("{$_GET['book']}"));
 
-        $sql = "delete from 'Document' where 'docID'=?";
+        $a = (int) $_GET['book'];
+        echo $a;
+
+        $sql = "delete from Document where docID=6";
         $query = $con->prepare($sql);
-        $query->execute(array("{$_GET['book']}"));
+        $query->execute();
+
+        $sql = "delete from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->bindParam(1, $a, PDO::PARAM_INT);
+        $query->execute();
 
         $sql = "insert into Document values(?, ?, ?, ?, ?, ?)";
         $query = $con->prepare($sql);
