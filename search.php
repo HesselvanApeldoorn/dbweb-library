@@ -12,12 +12,12 @@ endblock() ?>
             echo "<div class='search_bar'>";
                 echo "<form method='post'>";
                     echo "<input type='text' name='searchText' value='Search for books' onfocus='if(this.value == \"Search for books\") { this.value = \"\"; }' onblur='if(this.value == \"\") { this.value = \"Search for books\"; }'>";
-                   
+
                     if(!isset($_REQUEST['searchCriteria'])) {
                         $selected = "all";
                     } else {
                         $selected = $_REQUEST['searchCriteria'];
-                    }    
+                    }
                     $options = array("","","","", "","");
                     $values = array("all","document_name", "author", "isbn", "description", "category");
                     for($i=0;$i<sizeof($options);$i++) {
@@ -25,7 +25,7 @@ endblock() ?>
                             $options[$i] =  "selected='selected'";
                         }
                     }
-                    echo "<select name='searchCriteria'>    
+                    echo "<select name='searchCriteria'>
                             <option value='all' $options[0]>All</selected>
                             <option value='document_name' $options[1]>Name</option>
                             <option value='author' $options[2]>Author</option>
@@ -44,7 +44,7 @@ endblock() ?>
                     $selected = $_REQUEST['searchCriteria'];
                 }
                 if($selected!='all' && $selected!='category' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) { //the user searches on (name||author||isbn||description)
-                    $crit = $match[1];     
+                    $crit = $match[1];
                     $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID where $crit like ? AND visible = 1 group by Document.docID";
                 } else if($selected=='all') { // the user searches on everything
                     $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID  where concat(category, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1 group by Document.docID";
@@ -58,14 +58,14 @@ endblock() ?>
                 /* Show search results */
                 if($q->rowCount()>0) {
                     echo $q->rowCount() . " search results.<br/>";
-                    echo "<table>"; 
+                    echo "<table>";
                         echo "<th> Name</th>";
                         echo "<th> Author</th>";
                         echo "<th> Category</th>";
                         echo "<th> Description </th>";
                         echo "<th> ISBN(optional)</th>";
                         $i=0;
-                        foreach($q as $row) { 
+                        foreach($q as $row) {
                             $i = $i+1;
                             $i=$i%2;
                             $idvar = 'even';
@@ -77,8 +77,8 @@ endblock() ?>
                             echo "<td>{$row['categoryConcat']}</td>";
                             $desc = "<td>".substr($row['description'],0,20);
                             if(strlen($row['description'])>20) {
-                                $desc = $desc . "..."; 
-                            } 
+                                $desc = $desc . "...";
+                            }
                             echo $desc ."</td>";
                             echo "<td>{$row['isbn']}</td>";
                             echo "</tr>";
