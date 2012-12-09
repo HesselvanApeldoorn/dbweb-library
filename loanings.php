@@ -1,37 +1,14 @@
-<?php require 'templates/base.php' ?>
+<?php require 'templates/base.php';
+			error_reporting(-1);
+            ini_set("display_errors", 1); ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; library";
+        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; Notifications";
 endblock() ?>
 <?php startblock('content');
-  echo "<div class='main'>";
-        echo "<div class='blockHeader'> <h2>Library</h2></div>";
+    echo "<div class='main'>";
+        echo "<div class='blockHeader'><h2>Loanings</h2></div><br>";
         echo "<div class='blockContent'>";
-            echo "<div class='personal_library'>";
-                echo "<h4>Personal library</h4>";
-                echo "<table>";
-                    echo "<th> Name</th>";
-                    echo "<th> Author</th>";
-                    echo "<th> Description </th>";
-                    echo "<th> ISBN(optional)</th>";
-                    $query = $con->prepare('select * from Document');
-                    $query->execute();
-                    $i=0;
-                    foreach($query as $document) {
-                        $i = $i+1;
-                        $i=$i%2;
-                        $idvar = 'even';
-                        if ($i==0) {
-                            $idvar='odd';
-                        }
-                        echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
-                        echo "<td>{$document['author']}</td>";
-                        echo "<td>{$document['description']}</td>";
-                        echo "<td>{$document['isbn']}</td>";
-                        echo "</tr>";
-                    }
-                echo "</table>";
-            echo "</div>";
             echo "<div class='loaning'>";
                 echo "<hr/><h4>Books you lent out</h4>";
                 echo "<table>";
@@ -86,9 +63,11 @@ endblock() ?>
                 echo "</table>";
             echo "</div>";
             echo "<hr/><form>";
-                echo "<input type='submit' value='Upload new Document' />";
+                echo "<input type='submit' value='Lent a book' />";
             echo "</form";
-        echo "</div>";
+            echo "<hr/><form>";
+                echo "<input type='submit' value='Borrow a book' />";
+            echo "</form";
+    	echo "</div>";
     echo "</div>";
-
 endblock() ?>

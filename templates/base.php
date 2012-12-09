@@ -10,6 +10,8 @@ try {
 <html>
     <head>
          <link href="../static/css/base.css" rel="stylesheet" type="text/css">
+        <?php startblock('scripts') ?>
+        <?php endblock() ?>
     </head>
     <body>
         <div class='header'>
