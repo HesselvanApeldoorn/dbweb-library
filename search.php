@@ -47,9 +47,9 @@ endblock() ?>
                     $crit = $match[1];
                     $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID where $crit like ? AND visible = 1 group by Document.docID";
                 } else if($selected=='all') { // the user searches on everything
-                    $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID  where concat(category, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1 group by Document.docID";
+                    $sql =  "select * from Document inner join (select docID, GROUP_CONCAT(category separator ', ') as categoryConcat from DocCategory group by docID) as CAT on Document.docID=CAT.docID  where concat(categoryConcat, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1;";
                 } else if($selected=='category') {// the user searches on category
-                    $sql = "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join (SELECT * from DocCategory where category like ?) as CAT on Document.docID=CAT.docID where visible = 1 group by Document.docID";
+                    $sql = "select * from Document inner join (select docID, GROUP_CONCAT(category separator ', ')  as categoryConcat from DocCategory group by docID) as CAT on Document.docID=CAT.docID where CAT.categoryConcat like ? AND visible=1";
                 } else {
                     echo "Hacking attempt";
                 }
