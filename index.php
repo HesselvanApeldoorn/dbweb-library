@@ -15,7 +15,7 @@ endblock() ?>
             echo "</div>";
             echo "<div class='personal_library'>";
                 echo "<hr/><h4>Personal library</h4>";
-                echo "<table border='1'>"; 
+                echo "<table border='1'>";
                     echo "<th> Name</th>";
                     echo "<th> Author</th>";
                     $query = $con->prepare('select * from Document');
@@ -28,7 +28,7 @@ endblock() ?>
             echo "</div>";
             echo "<div class='loaning'>";
                 echo "<hr/><h4>Loaning</h4>";
-                echo "<table border='1'>"; 
+                echo "<table border='1'>";
                     echo "<th>Book</th>";
                     echo "<th>Lent from</th>";
                     echo "<th>Start date</th>";
@@ -38,7 +38,7 @@ endblock() ?>
                     foreach($query as $loaning) {
                         $query2 = $con->prepare("select * from Document where docID={$loaning['docID']}");
                         $query2->execute();
-                        $docName = $query2->fetch();  
+                        $docName = $query2->fetch();
                         echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
                         echo "<td>".substr($loaning['fromUser'],0,10)."...</td>";
                         echo "<td>{$loaning['start_date']}</td>";
