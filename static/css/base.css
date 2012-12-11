@@ -150,6 +150,16 @@ table {
     padding: 10px;
 }
 
+.blockContent h3 a {
+    color:black;
+}
+
+.blockContent hr {
+    border: 0;
+    background-color: gray;
+    height: 1px;
+    width: 100%;
+}
 .notification {
     background-color: white;
     -webkit-border-radius: 15px;

@@ -24,7 +24,7 @@ try {
             <div class='menu'>
                 <ul>
                     <a href='search.php'><li> Search </li> </a>
-                    <a href='library.php'><li> Personal library </li> </a>
+                    <a href='personal.php'><li> Personal Page </li> </a>
                     <a href='notifications.php'><li> Notifications </li> </a>
                     <a href=''><li> Settings </li> </a>
                 </ul>

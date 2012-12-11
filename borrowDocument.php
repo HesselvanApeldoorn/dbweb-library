@@ -9,13 +9,16 @@
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css" />
     <script>
-    $(function() {
-        $("#datepicker").datepicker();
-    });
+        $(function() {
+            $("#datepicker").datepicker();
+        });
+        $(function() {
+            $("#datepicker2").datepicker();
+        });
     </script>
 <?php endblock() ?>
 <?php startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; Notifications";
+        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Borrow";
 endblock() ?>
 <?php startblock('content'); ?>
 
@@ -23,23 +26,35 @@ endblock() ?>
     echo "<div class='main'>";
         echo "<div class='blockHeader'><h2>Loanings</h2></div><br>";
         echo "<div class='blockContent'>";
-        $sql = "select * from PaperDoc";
-        $query = $con->prepare($sql);
-        $query->execute();
-        echo "<h4>Document</h4>";
-        echo "<select name='document'>";
-        foreach($query as $book) {
-        	$sql = "select * from Document where docID=?";
-	        $query = $con->prepare($sql);
-	        $query->execute(array($book['docID']));
-	        $document = $query->fetch;
-	        echo "<option value='{$book['docID']}' >{$document['document_name']}</option>";
-        }
-        echo "</select>";
-        echo "<hr/>";
-        echo "<h4>Start Date</h4>";
-		echo "<p>Date: <input type='text' id='datepicker' /></p>";
-		echo "<h4>End Date</h4>";
-		echo "<p>Date: <input type='text' id='datepicker' /></p>";
+            if(!isset($_REQUEST['borrow'])) {
+
+                $sql = "select * from PaperDoc";
+                $query = $con->prepare($sql);
+                $query->execute();
+                echo "<h4>Document</h4>";
+                echo "<select name='document'>";
+                foreach($query as $book) {
+                        $sql = "select * from Document where docID=?";
+                        $query = $con->prepare($sql);
+                        $query->execute(array(str_replace('"','',$book['docID'])));
+                        $document = $query->fetch;
+                        echo "<option value='{$book['docID']}' >{$document['document_name']}</option>";
+                }
+                echo "</select>";
+                echo "<hr/>";
+               
+                echo "<form>";
+                    echo "<p style='float:left'>Start date: <input type='text' name='start' id='datepicker' value='".date("m/d/Y")."'/>";
+                    echo "<p style='float:left'>End date: <input type='text' name='end' id='datepicker2' value='".date("m/d/Y",strtotime("+7 day"))."'/>";
+                    echo "<input type='submit' name='borrow' value='Borrow' />";
+                echo "</form";
+            } else {
+                echo "Start date: " . $_REQUEST['start'];
+                echo "<br/>End date: ".$_REQUEST['end'];
+                if($_REQUEST['start'] >= $_REQUEST['end']) {
+                    echo "<p>Your start date is after the end date.</p>";
+                }
+            }
+        echo "</div>";  
     echo "</div>";
 endblock() ?>

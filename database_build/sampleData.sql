@@ -25,13 +25,19 @@ INSERT INTO Document VALUES(5, 'Frank Brokken', 'lecture encryption', 'encryptio
 INSERT INTO Document VALUES(6, 'Frank Brokken', 'lecture hashing', 'hashing.odp', True, null);
 INSERT INTO Document VALUES(7, 'Frank Brokken', 'lecture protocols', 'protocols.odp', False, null);
 INSERT INTO Document VALUES(8, 'Cagri Coltekin', 'lecture sesson management', 'DBweb04-Sessions-Security.pdf', True, null);
-
+INSERT INTO Document VALUES(9, 'Unknown', 'A religious book ', 'Bible', True, null);
+INSERT INTO Document VALUES(10, 'J.R.R. Tolkien', 'A world famous fantasy book', 'The lord of the rings', True, null);
+INSERT INTO Document VALUES(11, 'Dan Brown', 'A mystery-detective novel', 'The Da Vinci Code', True, null);
+INSERT INTO Document VALUES(12, 'Mario Puzo', 'A book about the maffia', 'The godfather', True, null);
 
 INSERT INTO PaperDoc VALUES(1, 'new', 'sample@hotmail.com');
 INSERT INTO PaperDoc VALUES(2, 'good', 'sample@hotmail.com');
 INSERT INTO PaperDoc VALUES(3, 'poor', 'sample2@hotmail.com');
 INSERT INTO PaperDoc VALUES(4, 'new', 'sample3@hotmail.com');
-
+INSERT INTO PaperDoc VALUES(9, 'decent', 'sample@hotmail.com');
+INSERT INTO PaperDoc VALUES(10, 'good', 'sample@hotmail.com');
+INSERT INTO PaperDoc VALUES(11, 'poor', 'sample2@hotmail.com');
+INSERT INTO PaperDoc VALUES(12, 'new', 'sample3@hotmail.com');
 
 INSERT INTO ElectronicDoc VALUES(5,True, 'odp', 'f5');
 INSERT INTO ElectronicDoc VALUES(6,False, 'odp', 'f6');
@@ -61,7 +67,17 @@ INSERT INTO DocCategory VALUES(5, 'education');
 INSERT INTO DocCategory VALUES(6, 'education');
 INSERT INTO DocCategory VALUES(7, 'education');
 INSERT INTO DocCategory VALUES(8, 'fantasy');
+INSERT INTO DocCategory VALUES(9, 'religious');
+INSERT INTO DocCategory VALUES(10, 'fantasy');
+INSERT INTO DocCategory VALUES(11, 'mystery');
+INSERT INTO DocCategory VALUES(11, 'detective');
+INSERT INTO DocCategory VALUES(12, 'crime');
 
 
-INSERT INTO Loaning VALUES(1, 2, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+INSERT INTO Loaning VALUES(1, 2, '20110921203040', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
 INSERT INTO Loaning VALUES(2, 3, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');
+INSERT INTO Loaning VALUES(3, 12, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+INSERT INTO Loaning VALUES(4, 9, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');
+INSERT INTO Loaning VALUES(5, 11, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+INSERT INTO Loaning VALUES(6, 10, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+
