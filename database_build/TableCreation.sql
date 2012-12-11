@@ -25,5 +25,5 @@ create table DocCategory(docID INT, category VARCHAR(255) not null, primary key(
 
 create table PreferredCategory(email VARCHAR(255), category VARCHAR(255) not null, primary key(email, category), foreign key(email) references User(email));
 
-create table Loaning(loaningID INT, docID INT not null, end_date DATETIME not null, start_date DATETIME not null, fromUser VARCHAR(255) not null, toUser VARCHAR(255) not null, primary key(loaningID), foreign key(docID) references Document(docID), foreign key(fromUser) references User(email), foreign key(toUser) references User(email));
+create table Loaning(loaningID INT, docID INT not null, end_date DATE not null, start_date DATE not null, fromUser VARCHAR(255) not null, toUser VARCHAR(255) not null, primary key(loaningID), foreign key(docID) references Document(docID), foreign key(fromUser) references User(email), foreign key(toUser) references User(email));
 
