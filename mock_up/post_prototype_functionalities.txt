@@ -9,3 +9,6 @@ IE compatibility.
 Uploading of documents
 Paging of documents/loanings (there will be 20 documents per page for exameple, instead of just all of them on 1 page)
 Confirmation messages should be shown after completing an action (i.e. succesfully inserted book)
+returning books.
+deleting books.
+status of book should change to lent out when a loaning has been made
