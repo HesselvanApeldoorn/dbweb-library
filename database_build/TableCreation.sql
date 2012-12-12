@@ -15,7 +15,7 @@ create table ElectronicDoc(docID INT, distributable BOOLEAN not null, extension 
 
 create table User(email VARCHAR(255), user_name VARCHAR(255) not null, password VARCHAR(15) not null, primary key(email));
 
-create table Notification(notificationID INT, email VARCHAR(255), message TEXT, notify_date DATETIME not null, primary key(notificationID), foreign key(email) references User(email));
+create table Notification(notificationID INT AUTO_INCREMENT, email VARCHAR(255), message TEXT, notify_date DATETIME not null, primary key(notificationID), foreign key(email) references User(email));
 
 create table ElectronicDocCopies(email VARCHAR(255), docID INT, primary key(email,docID), foreign key(docID) references Document(docID), foreign key(email) references User(email));
 

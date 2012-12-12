@@ -13,53 +13,99 @@ endblock() ?>
                 echo "<input type='submit' name='searchButton' value='Find'>";
                 echo "</form>";
             echo "</div>";
-            echo "<div class='personal_library'>";
-                echo "<hr/><h4>Personal library</h4>";
-                echo "<table border='1'>";
+            echo "<h3><a href='personalLibrary.php'>Personal library</a><hr/></h3>";
+            $query = $con->prepare("select * from Document limit 10");
+            $query2 = $con->prepare("select count(*) from Document");
+            $query->execute();
+            $query2->execute();
+            if($query->rowCount()>0) {
+                echo "<table>";
                     echo "<th> Name</th>";
                     echo "<th> Author</th>";
-                    $query = $con->prepare('select * from Document');
-                    $query->execute();
+                    if($query2->fetchColumn()>10) {
+                        echo "<tfoot align='right'> 
+                                <tr >
+                                    <td colspan='4'> <a href='personalLibrary.php'>See more...</a></td>
+                                </tr>
+                            </tfoot>";
+                    }
+                    $i=0;
                     foreach($query as $document) {
+                        $i = $i+1;
+                        $i=$i%2;
+                        $idvar = 'even';
+                        if ($i==0) {
+                            $idvar='odd';
+                        }
                         echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
-                        echo "<td>{$document['author']}</td></tr>";
+                        echo "<td>{$document['author']}</td>";
+                        echo "</tr>";
                     }
                 echo "</table>";
-            echo "</div>";
-            echo "<div class='loaning'>";
-                echo "<hr/><h4>Loaning</h4>";
-                echo "<table border='1'>";
+            } else { //no documents
+                echo "There are no documents currently.";
+            }
+            echo "<h3><a href='loanings.php'>Books you lent out</a><hr/></h3>";
+            $query = $con->prepare("select * from Loaning  limit 5"); //TODO where user=?
+            $query2 = $con->prepare("select count(*) from Loaning"); //TODO where user=?
+            $query->execute();
+            $query2->execute();
+            if($query->rowCount()>0) {
+                echo "<table>";
                     echo "<th>Book</th>";
                     echo "<th>Lent from</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    $query = $con->prepare('select * from Loaning');
-                    $query->execute();
+                    if($query2->fetchColumn()>5) {
+                        echo "<tfoot align='right'> 
+                                <tr >
+                                    <td colspan='4'> <a href='loanings.php'>See more...</a></td>
+                                </tr>
+                            </tfoot>";
+                    }
+
+                    $i=0;
                     foreach($query as $loaning) {
+                        $i = $i+1;
+                        $i=$i%2;
+                        $idvar = 'even';
+                        if ($i==0) {
+                            $idvar='odd';
+                        }
                         $query2 = $con->prepare("select * from Document where docID={$loaning['docID']}");
                         $query2->execute();
                         $docName = $query2->fetch();
-                        echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
-                        echo "<td>".substr($loaning['fromUser'],0,10)."...</td>";
+                        echo "<tr id='$idvar' ><td><a href='book.php?book={$loaning['docID']}'>{$docName['document_name']}</a></td>";
+                        echo "<td>{$loaning['fromUser']}</td>";
                         echo "<td>{$loaning['start_date']}</td>";
                         echo "<td>{$loaning['end_date']}</td></tr>";
                     }
                 echo "</table>";
-            echo "</div>";
-        echo "</div>";
-    echo "</div>";
-    echo "<div class='notifications'>";
-        echo "<div class='blockHeader'> <h2>Notifications</h2></div>";
-        $query = $con->prepare('select * from Notification');
-        $query->execute();
-        echo "<div class='blockContent'>";
-            foreach($query as $notification) {
-                echo "<div class='notification'>";
-                echo "<strong>Notification:</strong><br>";
-                echo $notification['message'];
-                echo "</div>";
+            } else {//no loanings
+                echo "There are no loanings currently.";
             }
         echo "</div>";
     echo "</div>";
-
+    echo "<div class='notifications'>";
+        echo "<div class='blockHeader'> <h2>Notifications</h2></div>"; 
+        echo "<div class='blockContent'>";
+            $query = $con->prepare("select * from Notification limit 5");
+            $query2 = $con->prepare("select count(*) from Notification");
+            $query->execute();
+            $query2->execute();
+            if($query->rowCount()>0) {
+                foreach($query as $notification) {
+                    echo "<div class='notification'>";
+                        echo "<strong>{$notification['notify_date']}</strong><hr/>";
+                        echo $notification['message'];
+                    echo "</div>";
+                }
+                if($query2->fetchColumn()>5) {
+                    echo "<a style='float:right' href='notifications.php'>See more...</a>";
+                }   
+            } else { //no notifications
+                echo "There are no notifications currently.";
+            }
+        echo "</div>";
+    echo "</div>";
 endblock() ?>
