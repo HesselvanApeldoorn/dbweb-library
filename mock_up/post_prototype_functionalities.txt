@@ -1,5 +1,11 @@
 Functionalities that will be added after the prototype:
-User authentication
+User authentication/authorisation (adapting queries to this)
+User related pages (Settings).
+Modifying queries to only show documents that were marked as visible.
+modifying queries to only show documents that are not already lent out ( when requesting a loaning).
+It should be visible whether a document is lent out or not. borrow button on book.php
+Books that are not your own shouldn't be modifyable.
+IE compatibility.
 Uploading of documents
 Paging of documents/loanings (there will be 20 documents per page for exameple, instead of just all of them on 1 page)
-
+Confirmation messages should be shown after completing an action (i.e. succesfully inserted book)

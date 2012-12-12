@@ -39,7 +39,7 @@ endblock() ?>
             } else { // empty table Loaning
                 echo "There are no loanings currently.";
             }
-            echo "<form>";
+            echo "<form action='lentDocument.php'>";
                 echo "<input type='submit' value='Lent a book' />";
             echo "</form";
             echo "<h3>Books you borrowed<hr/></h3>";
