@@ -7,10 +7,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
     } else {
         $visible=0;
     }
-    $sql = "select count(*) from Document";
-    $query = $con->prepare($sql);
-    $query->execute();
-    $docID= $query->fetchColumn()+1;
 
     $sql = "select * from PaperDoc where docID =?";
     $query = $con->prepare($sql);
@@ -34,9 +30,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $query->execute(array($_GET['book']));
         $electronicDoc = $query->fetch();
 
-        $sql = "insert into Document values(?, ?, ?, ?, ?, ?)";
+        $sql = "insert into Document (author, description, document_name, visible, isbn) values(?, ?, ?, ?, ?)";
         $query = $con->prepare($sql);
-        $query->execute(array($docID,$_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn']));
+        $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn']));
+        $docID = $con->lastInsertId();
 
         $sql = "update ElectronicDocCopies set docID=? where docID=? and email='sample@hotmail.com'";
         $query = $con->prepare($sql);
@@ -47,17 +44,15 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $query->execute(array($docID, $distributable,$electronicDoc['extension'], $electronicDoc['content']));
         $categories = $_POST['category'];
         foreach($categories as $category) { 
-            echo $category;
             $sql = "insert into DocCategory values(?,?)";
             $query = $con->prepare($sql); 
             $query->execute(array($docID, $category));
         }
-
     }
-    header("location:library.php");
+    header("location:personalLibrary.php");
 } else { //method is GET
     startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='library.php'>Library</a> &raquo; Document";
+        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; Document";
     endblock();
     startblock('content');
         $sql = "select * from Document where docID=?";
