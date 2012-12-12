@@ -11,18 +11,21 @@
     <script>
         $(function() {
             $("#datepicker").datepicker();
+            $("#datepicker").datepicker("option", "dateFormat","yy-mm-dd");
+            $("#datepicker").datepicker("option", "showAnim", "slideDown");
+
         });
         $(function() {
             $("#datepicker2").datepicker();
+            $("#datepicker2").datepicker("option", "dateFormat","yy-mm-dd");
+            $("#datepicker2").datepicker("option", "showAnim", "slideDown");
         });
     </script>
 <?php endblock() ?>
 <?php startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Borrow";
+    echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Borrow";
 endblock() ?>
-<?php startblock('content'); ?>
-
-        <?php
+<?php startblock('content');
     echo "<div class='main'>";
         echo "<div class='blockHeader'><h2>Loanings</h2></div><br>";
         echo "<div class='blockContent'>";
@@ -34,31 +37,34 @@ endblock() ?>
                     echo "<a href=''>Retry</a>"; 
                     echo $_REQUEST['selectedDoc'];
                 } else {
-                    $sql = "insert into Notification values(?,?,?,?)";
+                    $sql = "insert into Notification (email, message, notify_date) values(?,?,?)";
                     $query = $con->prepare($sql);
-                    $query->execute(array(40504,"sample@hotmail.com","Cagri has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d")));
-                    header("location:library.php");                    
+                    $query->execute(array("sample@hotmail.com","Cagri has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
+                    header("location:personalLibrary.php");                    
                 }
-            } else { # method is GET
-                echo "<form method='post'>";
-                    $sql = "select * from PaperDoc";
-                    $query = $con->prepare($sql);
-                    $query->execute();
-                    echo "<h4>Document</h4>";
-                    echo "<select name='selectedDoc'>";
-                    foreach($query as $book) {
-                            $sql = "select * from Document where docID=?";
-                            $query2 = $con->prepare($sql);
-                            $query2->execute(array(str_replace('"','',$book['docID'])));
-                            $document = $query2->fetch();
-                            echo "<option name='selectedDoc' value='{$document['document_name']}' >{$document['document_name']}</option>";
-                    }
-                    echo "</select>";
-                    echo "<hr/>";
-                    echo "<p style='float:left'>Start date: <input type='date' name='start' id='datepicker' value='".date("m/d/Y")."'/>";
-                    echo "<p style='float:left'>End date: <input type='date' name='end' id='datepicker2' value='".date("m/d/Y",strtotime("+7 day"))."'/>";
-                    echo "<input type='submit' name='borrow' value='Borrow' />";
-                echo "</form";
+            } else { # method is GET   
+                $sql = "select * from PaperDoc";
+                $query = $con->prepare($sql);
+                $query->execute();
+                if($query->rowCount()>0) {
+                    echo "<form method='post'>";
+                        echo "Document: <select name='selectedDoc'>";
+                        foreach($query as $book) {
+                                $sql = "select * from Document where docID=?";
+                                $query2 = $con->prepare($sql);
+                                $query2->execute(array(str_replace('"','',$book['docID'])));
+                                $document = $query2->fetch();
+                                echo "<option name='selectedDoc' value='{$document['document_name']}' >{$document['document_name']}</option>";
+                        }
+                        echo "</select>";
+                        echo "<hr/>";
+                        echo "<div style='float:left'>Start date: <input type='date' name='start' id='datepicker' value='".date("m/d/Y")."'/>";
+                        echo "&nbsp; &nbsp; &nbsp; &nbsp;End date: <input type='date' name='end' id='datepicker2' value='".date("m/d/Y",strtotime("+7 day"))."'/></div>";
+                        echo "<br/><br/><input type='submit' name='borrow' value='Borrow'/>";
+                    echo "</form";
+                } else { //No docs to be borrowed
+                    echo "There are no books to be borrowed currently".
+                }
             }
         echo "</div>";  
     echo "</div>";

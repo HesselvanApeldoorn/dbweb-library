@@ -41,10 +41,12 @@ body {
 
 .menu li {
     background-color: #FFF48F;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
     box-shadow:         0 6px 6px -6px black;
-    border-radius: 15px;
     margin: 10px;
     margin-top: 0px;
     padding: 8px;
@@ -152,12 +154,15 @@ table {
 
 .blockContent h3 a {
     color:black;
+    text-decoration: none;
 }
 
 .blockContent hr {
     border: 0;
     background-color: gray;
     height: 1px;
+    margin-top: 0px;  
+    padding-top: 0px;
     width: 100%;
 }
 .notification {

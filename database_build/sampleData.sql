@@ -9,12 +9,12 @@ INSERT INTO PreferredCategory VALUES('sample2@hotmail.com', 'action');
 INSERT INTO PreferredCategory VALUES('sample3@hotmail.com', 'adventure');
 
 
-INSERT INTO Notification VALUES(1, 'sample3@hotmail.com', 'hey gimme book', '20120301');
-INSERT INTO Notification VALUES(2, 'sample2@hotmail.com', 'hey', '20110921');
-INSERT INTO Notification VALUES(3, 'sample2@hotmail.com', 'bye', '20120809');
-INSERT INTO Notification VALUES(4, 'sample@hotmail.com', 'you wrecked my book!!', '20121212');
-INSERT INTO Notification VALUES(5, 'sample@hotmail.com', 'ffs', '20121212');
-INSERT INTO Notification VALUES(6, 'sample@hotmail.com', 'ffs2', '20121213');
+INSERT INTO Notification VALUES(1, 'sample3@hotmail.com', 'hey gimme book', '20120301221512');
+INSERT INTO Notification VALUES(2, 'sample2@hotmail.com', 'hey', '20110921113256');
+INSERT INTO Notification VALUES(3, 'sample2@hotmail.com', 'bye', '20120809162909');
+INSERT INTO Notification VALUES(4, 'sample@hotmail.com', 'you wrecked my book!!', '20121212143258');
+INSERT INTO Notification VALUES(5, 'sample@hotmail.com', 'ffs', '20121212010905');
+INSERT INTO Notification VALUES(6, 'sample@hotmail.com', 'ffs2', '20121213123658');
 
 
 INSERT INTO Document VALUES(1, 'JK Rowling', 'first book of the serie', 'Philosophers stone', True, '0-7475-3269-9');
@@ -74,7 +74,7 @@ INSERT INTO DocCategory VALUES(11, 'detective');
 INSERT INTO DocCategory VALUES(12, 'crime');
 
 
-INSERT INTO Loaning VALUES(1, 2, '20110921203040', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+INSERT INTO Loaning VALUES(1, 2, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
 INSERT INTO Loaning VALUES(2, 3, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');
 INSERT INTO Loaning VALUES(3, 12, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
 INSERT INTO Loaning VALUES(4, 9, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');

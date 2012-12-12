@@ -12,13 +12,17 @@ endblock() ?>
         $sql = "select * from Notification";
         $query = $con->prepare($sql);
         $query->execute();
-        echo "<div class='blockContent'>";
-            foreach($query as $notification) {
-                echo "<div class='notification'>";
-                echo "<strong>Notification:</strong><br>";
-                echo $notification['message'];
-                echo "</div>";
-            }
-        echo "</div>";
+        if($query->rowCount()>0) {
+            echo "<div class='blockContent'>";
+                foreach($query as $notification) {
+                    echo "<div class='notification'>";
+                    echo "<strong>{$notification['notify_date']}</strong><hr/>";
+                    echo $notification['message'];
+                    echo "</div>";
+                }
+            echo "</div>";
+        } else {
+            echo "There are no notifications currently.";
+        }
     echo "</div>";
 endblock() ?>
