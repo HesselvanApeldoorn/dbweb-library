@@ -47,7 +47,7 @@ endblock() ?>
             } else { //no documents
                 echo "There are no documents currently.";
             }
-            echo "<h3><a href='loanings.php'>Books you lent out</a><hr/></h3>";
+            echo "<h3><a href='loanings.php'>Books you lent</a><hr/></h3>";
             $query = $con->prepare("select * from Loaning limit 5"); //TODO where user=?
             $query2 = $con->prepare("select count(*) from Loaning"); //TODO where user=?
             $query->execute();
@@ -95,7 +95,7 @@ endblock() ?>
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th>Book</th>";
-                    echo "<th>Lent from</th>";
+                    echo "<th>Borrowed from</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
                     if($query2->fetchColumn()>5) {

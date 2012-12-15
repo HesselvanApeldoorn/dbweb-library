@@ -9,7 +9,7 @@ endblock() ?>
     echo "<div class='main'>";
         echo "<div class='blockHeader'><h2>Loanings</h2></div>";
         echo "<div class='blockContent'>";
-            echo "<h3>Books you lent out<hr/></h3>";
+            echo "<h3>Books you lent<hr/></h3>";
             $query = $con->prepare('select * from Loaning');
             $query->execute();
             if($query->rowCount()>0) {
@@ -39,16 +39,16 @@ endblock() ?>
             } else { // empty table Loaning
                 echo "There are no loanings currently.";
             }
-            echo "<form action='lentDocument.php'>";
-                echo "<input type='submit' value='Lent a book' />";
-            echo "</form";
+            echo "<form action='lendDocument.php'>";
+                echo "<input type='submit' value='Lend a book' />";
+            echo "</form>";
             echo "<h3>Books you borrowed<hr/></h3>";
             $query = $con->prepare('select * from Loaning');
             $query->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th>Book</th>";
-                    echo "<th>Lent from</th>";
+                    echo "<th>Borrowed from</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
 
@@ -74,7 +74,7 @@ endblock() ?>
             }
             echo "<form action='borrowDocument.php'>";
                 echo "<input type='submit' value='Borrow a book' />";
-            echo "</form";
+            echo "</form>";
         echo "</div>";
     echo "</div>";
 endblock() ?>

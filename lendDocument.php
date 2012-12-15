@@ -23,11 +23,11 @@
     </script>
 <?php endblock() ?>
 <?php startblock('header');
-    echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Lent";
+    echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Lend";
 endblock() ?>
 <?php startblock('content');
     echo "<div class='main'>";
-        echo "<div class='blockHeader'><h2>Lent a document</h2></div><br>";
+        echo "<div class='blockHeader'><h2>Lend a document</h2></div><br>";
         echo "<div class='blockContent'>";
             if ($_SERVER['REQUEST_METHOD']=='POST') {
                 if($_REQUEST['start'] >= $_REQUEST['end']) {
@@ -59,10 +59,10 @@ endblock() ?>
                         echo "<hr/>";
                         echo "<div style='float:left'>Start date: <input type='date' name='start' id='datepicker' value='".date("m/d/Y")."'/>";
                         echo "&nbsp; &nbsp; &nbsp; &nbsp;End date: <input type='date' name='end' id='datepicker2' value='".date("m/d/Y",strtotime("+7 day"))."'/></div>";
-                        echo "<br/><br/><input type='submit' name='lent' value='Lent'/>";
+                        echo "<br/><br/><input type='submit' name='lend' value='Lend'/>";
                     echo "</form";
-                } else { //No docs to be lent
-                    echo "There are no books to be lent currently.";
+                } else { //No docs to be lend
+                    echo "There are no books to be lend currently.";
                 }
             }
         echo "</div>";  

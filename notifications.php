@@ -9,7 +9,7 @@ endblock() ?>
     echo "<div class='main'>";
         echo "<div class='blockHeader'><h2>Notifications</h2></div><br>";
         echo "<div class='blockContent'>";
-        $sql = "select * from Notification";
+        $sql = "select * from Notification order by notify_date DESC";
         $query = $con->prepare($sql);
         $query->execute();
         if($query->rowCount()>0) {

@@ -45,7 +45,7 @@ endblock() ?>
             } else { //no documents
                 echo "There are no documents currently.";
             }
-            echo "<h3><a href='loanings.php'>Books you lent out</a><hr/></h3>";
+            echo "<h3><a href='loanings.php'>Books you lent</a><hr/></h3>";
             $query = $con->prepare("select * from Loaning  limit 5"); //TODO where user=?
             $query2 = $con->prepare("select count(*) from Loaning"); //TODO where user=?
             $query->execute();
@@ -89,7 +89,7 @@ endblock() ?>
     echo "<div class='notifications'>";
         echo "<div class='blockHeader'> <h2>Notifications</h2></div>"; 
         echo "<div class='blockContent'>";
-            $query = $con->prepare("select * from Notification limit 5");
+            $query = $con->prepare("select * from Notification order by notify_date DESC limit 5");
             $query2 = $con->prepare("select count(*) from Notification");
             $query->execute();
             $query2->execute();
