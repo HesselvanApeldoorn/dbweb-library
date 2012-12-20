@@ -154,6 +154,12 @@ table {
     padding: 10px;
 }
 
+#login, .email, .password {
+    float: left;
+    clear: both;
+}
+
+
 
 /********************************************* Home page styling *********************************************/
 .library, .notifications {

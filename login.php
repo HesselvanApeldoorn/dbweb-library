@@ -27,6 +27,7 @@
                     $query->execute(array( $_REQUEST['email'], hash('sha512', $_REQUEST['password'])));
                     $correct_account = $query->fetchColumn();
                     if ($correct_account ==0) {
+                        header("Location: login.php?email={$_REQUEST['email']}");
                         echo "incorrect account credentials.<br/> <a href='login.php'>Retry</a>";
                     } else {
                         $_SESSION['email']=$_REQUEST['email'];
@@ -39,17 +40,25 @@
                     <div class='accountHeader'>
                         <h2>Log in</h2>
                     </div>
-                    <div class='accountContent'>
-                        <form method='post'>
-                            <div class='email'>
-                                E-mail: <input type='text' name='email' id='email'>
-                            </div>
+                    <div class='accountContent'>";
+                        if (isset($_REQUEST['email'])) {
+                            echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
+                        }
+                        echo "<form method='post'>
+                            <div class='email'>";
+                               if(isset($_REQUEST['email'])) {
+                                    echo "E-mail: <input type='text' name='email' id='email' value={$_REQUEST['email']}> ";
+                               } else {
+                                    echo "E-mail: <input type='text' name='email' id='email'>";
+                                }
+                            echo "</div>";
+                            echo "
                             <div class='password'>
                                 Password: <input type='password' name='password' id='password'>
-                            </div>
-                            <input type='submit' name='login' id='login' value='login'>
+                            </div>";
+                            echo "<input type='submit' name='login' id='login' value='login' />
                         </form>
-                        <div style='float: right' >
+                        <div style='clear:both; float: right' >
                             <a href='register.php'>Register</a>
                             <a href='forgotPw.php'>Forgot password?</a>
                         </div>
