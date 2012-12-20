@@ -13,7 +13,7 @@ create table Document(docID INT AUTO_INCREMENT, author VARCHAR(255), description
 
 create table ElectronicDoc(docID INT, distributable BOOLEAN not null, extension VARCHAR(10) not null, content LONGBLOB not null, primary key(docID), foreign key(docID) references Document(docID));
 
-create table User(email VARCHAR(255), user_name VARCHAR(255) not null, password VARCHAR(15) not null, primary key(email));
+create table User(email VARCHAR(255), user_name VARCHAR(255) not null, password VARCHAR(255) not null, primary key(email));
 
 create table Notification(notificationID INT AUTO_INCREMENT, email VARCHAR(255), message TEXT, notify_date DATETIME not null, primary key(notificationID), foreign key(email) references User(email));
 

@@ -1,6 +1,10 @@
 <?php require 'ti.php' ?>
 <?php require '../../libConfig.php' ?>
 <?php
+session_start();
+if  (!isset($_SESSION["user"])) {
+    header("location:login.php");
+}
 try {
     $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
 } catch(PDOException $e) {
@@ -15,9 +19,9 @@ try {
     </head>
     <body>
         <div class='header'>
-            <?php startblock('header') ?>
-            <?php endblock() ?>
-            <a id='logout' href=''>Log out</a>
+                <?php startblock('header') ?>
+                <?php endblock() ?>
+                <a id='logout' href='logout.php'>Log out</a>
         </div>
 
         <div class='container'>

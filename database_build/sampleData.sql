@@ -1,4 +1,4 @@
-INSERT INTO User VALUES('sample@hotmail.com', 'user1', 'user1');
+INSERT INTO User VALUES('sample@hotmail.com', 'user1', '9ec62c20118ff506dac139ec30a521d12b9883e55da92b7d9adeefe09ed4e0bd152e2a099339871424263784f8103391f83b781c432f45eccb03e18e28060d2f');
 INSERT INTO User VALUES('sample2@hotmail.com', 'user2', 'user2');
 INSERT INTO User VALUES('sample3@hotmail.com', 'user3', 'user3');
 
