@@ -1,4 +1,5 @@
 <?php require '../../libConfig.php' ?>
+<link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php
     session_start();
     if  (isset($_SESSION["user"])) {
@@ -7,7 +8,8 @@
     try {
         $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
     } catch(PDOException $e) {
-        echo $e->getMessage();
+        echo "Could not connect to database.";
+        die();
     }
 ?>
 <html>
