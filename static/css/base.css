@@ -133,6 +133,16 @@ table {
     width: 100%;
 }
 
+.accountContainer {
+    height: auto;  
+    left: 50%;
+    margin-left: -175px;
+    margin-top: -175px;
+    position:absolute;
+    top: 50%;
+    width: 350px;
+}
+
 .account {
     background-color: #FFF48F;
     -webkit-border-radius: 15px;
@@ -141,13 +151,7 @@ table {
     -webkit-box-shadow: 0 6px 6px -6px black;
     -moz-box-shadow:    0 6px 6px -6px black;
     box-shadow:         0 6px 6px -6px black;
-    height: 150px;   
-    left: 50%;
-    margin-left: -175px;
-    margin-top: -175px;
-    position:absolute;
-    top: 50%;
-    width: 350px;
+    float: left;
 }
 
 .accountContent {

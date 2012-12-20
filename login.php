@@ -36,32 +36,34 @@
                 }
             } else {
                 echo "
-                <div class='account'>
-                    <div class='accountHeader'>
-                        <h2>Log in</h2>
-                    </div>
-                    <div class='accountContent'>";
-                        if (isset($_REQUEST['email'])) {
-                            echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
-                        }
-                        echo "<form method='post'>
-                            <div class='email'>";
-                               if(isset($_REQUEST['email'])) {
-                                    echo "E-mail: <input type='text' name='email' id='email' value={$_REQUEST['email']}> ";
-                               } else {
-                                    echo "E-mail: <input type='text' name='email' id='email'>";
-                                }
-                            echo "</div>";
-                            echo "
-                            <div class='password'>
-                                Password: <input type='password' name='password' id='password'>
-                            </div>";
-                            echo "<input type='submit' name='login' id='login' value='login' />
-                        </form>
-                        <div style='clear:both; float: right' >
-                            <a href='register.php'>Register</a>
-                            <a href='forgotPw.php'>Forgot password?</a>
+                <div class='accountContainer'>
+                    <div class='account'>
+                        <div class='accountHeader'>
+                            <h2>Log in</h2>
                         </div>
+                        <div class='accountContent'>";
+                            if (isset($_REQUEST['email'])) {
+                                echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
+                            }
+                            echo "<form method='post'>
+                                <div class='email'>";
+                                if(isset($_REQUEST['email'])) {
+                                        echo "E-mail: <input type='text' name='email' id='email' value={$_REQUEST['email']}> ";
+                                } else {
+                                        echo "E-mail: <input type='text' name='email' id='email'>";
+                                    }
+                                echo "</div>";
+                                echo "
+                                <div class='password'>
+                                    Password: <input type='password' name='password' id='password'>
+                                </div>";
+                                echo "<input type='submit' name='login' id='login' value='login' />
+                            </form>
+                        </div>
+                    </div>
+                    <div style='clear:both; float: right' >
+                        <a href='register.php'>Register</a>
+                        <a href='forgotPw.php'>Forgot password?</a>
                     </div>
                 </div>";
             }
