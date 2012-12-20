@@ -133,15 +133,8 @@ table {
     width: 100%;
 }
 
-.account {
-    background-color: #FFF48F;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
-    -webkit-box-shadow: 0 6px 6px -6px black;
-    -moz-box-shadow:    0 6px 6px -6px black;
-    box-shadow:         0 6px 6px -6px black;
-    height: 150px;   
+.accountContainer {
+    height: auto;  
     left: 50%;
     margin-left: -175px;
     margin-top: -175px;
@@ -150,9 +143,26 @@ table {
     width: 350px;
 }
 
+.account {
+    background-color: #FFF48F;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 6px 6px -6px black;
+    -moz-box-shadow:    0 6px 6px -6px black;
+    box-shadow:         0 6px 6px -6px black;
+    float: left;
+}
+
 .accountContent {
     padding: 10px;
 }
+
+#login, .email, .password {
+    float: left;
+    clear: both;
+}
+
 
 
 /********************************************* Home page styling *********************************************/
