@@ -2,7 +2,7 @@
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php
     session_start();
-    if  (isset($_SESSION["user"])) {
+    if  (isset($_SESSION["email"])) {
         header("location:index.php");
     }
     try {
@@ -17,38 +17,47 @@
     </head>
     <body>
 
-    <div>
-        <?php
-         if ($_SERVER['REQUEST_METHOD']=='POST') {
-                $sql = "select count(*) from User where user_name=? AND password=?";
-                $query = $con->prepare($sql);
-                $query->execute(array( $_REQUEST['username'], hash('sha512', $_REQUEST['password'])));
-                $correct_account = $query->fetchColumn();
-                if ($correct_account ==0) {
-                    echo "incorrect account credentials.<br/> <a href='login.php'>Retry</a>";
-                    echo hash('sha512', $_REQUEST['password']);
-                } else {
-                    $_SESSION['user']=$_REQUEST['username'];
-                    header("Location: index.php");
+        <div>
+            <?php
+            if ($_SERVER['REQUEST_METHOD']=='POST') {
+               if(!isset($_SESSION['confirmed']) || $_SESSION['confirmed']==true) { 
+                    unset($_SESSION['confirmed']);
+                    $sql = "select count(*) from User where email=? AND password=?";
+                    $query = $con->prepare($sql);
+                    $query->execute(array( $_REQUEST['email'], hash('sha512', $_REQUEST['password'])));
+                    $correct_account = $query->fetchColumn();
+                    if ($correct_account ==0) {
+                        echo "incorrect account credentials.<br/> <a href='login.php'>Retry</a>";
+                    } else {
+                        $_SESSION['email']=$_REQUEST['email'];
+                        header("Location: index.php");
+                    }
                 }
-        } else {
-            echo "
-            <div class='account'>
-                <form method='post'>
-                    <div class='username'>
-                        Username: <input type='text' name='username' id='username'>
+            } else {
+                echo "
+                <div class='account'>
+                    <div class='accountHeader'>
+                        <h2>Log in</h2>
                     </div>
-                    <div class='password'>
-                        Password: <input type='password' name='password' id='password'>
+                    <div class='accountContent'>
+                        <form method='post'>
+                            <div class='email'>
+                                E-mail: <input type='text' name='email' id='email'>
+                            </div>
+                            <div class='password'>
+                                Password: <input type='password' name='password' id='password'>
+                            </div>
+                            <input type='submit' name='login' id='login' value='login'>
+                        </form>
+                        <div style='float: right' >
+                            <a href='register.php'>Register</a>
+                            <a href='forgotPw.php'>Forgot password?</a>
+                        </div>
                     </div>
-                    <input type='submit' name='login' value='login'>
-                </form>
-                Not a registered user yet?
-                <a href='register.php'>Register here</a>
-            </div>";
-        }
-        ?>
+                </div>";
+            }
+            ?>
 
-    </div>
+        </div>
     </body>
 </html>

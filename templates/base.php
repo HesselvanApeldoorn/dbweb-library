@@ -2,7 +2,7 @@
 <?php require '../../libConfig.php' ?>
 <?php
 session_start();
-if  (!isset($_SESSION["user"])) {
+if  (!isset($_SESSION["email"])) {
     header("location:login.php");
 }
 try {
