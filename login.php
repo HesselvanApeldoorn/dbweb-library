@@ -32,6 +32,8 @@
                         $_SESSION['email']=$_REQUEST['email'];
                         header("Location: index.php");
                     }
+                } else {
+                    echo "Your account has not been activated yet. You should've received an activation mail.";
                 }
             } else {
                 echo "
