@@ -34,14 +34,14 @@ endblock() ?>
                     echo "Start date: " . $_REQUEST['start'];
                     echo "<br/>End date: ".$_REQUEST['end'];
                     echo "<p>Your start date is after the end date.</p>";
-                    echo "<a href=''>Retry</a>"; 
+                    echo "<a href=''>Retry</a>";
                 } else {
                     $sql = "insert into Loaning (docID, start_date, end_date, fromUser, toUser) values(?,?,?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array($_REQUEST['docID'], $_REQUEST['start'], $_REQUEST['end'], "sample@hotmail.com", "sample2@hotmail.com"));
-                    header("location:personalLibrary.php");                    
+                    header("location:personalLibrary.php");
                 }
-            } else { # method is GET   
+            } else { # method is GET
                 $sql = "select * from PaperDoc";
                 $query = $con->prepare($sql);
                 $query->execute();
@@ -65,6 +65,6 @@ endblock() ?>
                     echo "There are no books to be lend currently.";
                 }
             }
-        echo "</div>";  
+        echo "</div>";
     echo "</div>";
 endblock() ?>

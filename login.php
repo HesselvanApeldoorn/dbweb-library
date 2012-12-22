@@ -20,7 +20,7 @@
         <div>
             <?php
             if ($_SERVER['REQUEST_METHOD']=='POST') {
-               if(!isset($_SESSION['confirmed']) || $_SESSION['confirmed']==true) { 
+               if(!isset($_SESSION['confirmed']) || $_SESSION['confirmed']==true) {
                     unset($_SESSION['confirmed']);
                     $sql = "select count(*) from User where email=? AND password=?";
                     $query = $con->prepare($sql);

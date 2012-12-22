@@ -8,18 +8,19 @@ endblock() ?>
         echo "<div class='blockHeader'> <h2>Personal Page</h2></div>";
         echo "<div class='blockContent'>";
             echo "<h3><a href='personalLibrary.php'>Personal library</a><hr/></h3>";
-            $query = $con->prepare("select * from Document limit 10");
-            $query2 = $con->prepare("select count(*) from Document");
+            $query = $con->prepare("select Document.* from Document
+                join PaperDoc on (Document.docID=PaperDoc.docID) where PaperDoc.email='{$_SESSION['email']}' union
+                select Document.* from Document
+                join ElectronicDocCopies on (Document.docID=ElectronicDocCopies.docID) where ElectronicDocCopies.email='{$_SESSION['email']}'limit 10");
             $query->execute();
-            $query2->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th> Name</th>";
                     echo "<th> Author</th>";
                     echo "<th> Description </th>";
                     echo "<th> ISBN(optional)</th>";
-                    if($query2->fetchColumn()>10) {
-                        echo "<tfoot align='right'> 
+                    if($query->rowCount()>10) {
+                        echo "<tfoot align='right'>
                                 <tr >
                                     <td colspan='4'> <a href='personalLibrary.php'>See more...</a></td>
                                 </tr>
@@ -48,18 +49,16 @@ endblock() ?>
                 echo "There are no documents currently.";
             }
             echo "<h3><a href='loanings.php'>Books you lent</a><hr/></h3>";
-            $query = $con->prepare("select * from Loaning limit 5"); //TODO where user=?
-            $query2 = $con->prepare("select count(*) from Loaning"); //TODO where user=?
+            $query = $con->prepare("select * from Loaning,User where User.email=Loaning.toUser and Loaning.fromUser='{$_SESSION['email']}' limit 5"); //TODO where user=?
             $query->execute();
-            $query2->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th>Book</th>";
-                    echo "<th>Lent from</th>";
+                    echo "<th>Lent to</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    if($query2->fetchColumn()>5) {
-                        echo "<tfoot align='right'> 
+                    if($query->rowCount()>5) {
+                        echo "<tfoot align='right'>
                                 <tr>
                                     <td colspan='4'> <a href='loanings.php'>See more...</a></td>
                                 </tr>
@@ -78,7 +77,7 @@ endblock() ?>
                         $query2->execute();
                         $docName = $query2->fetch();
                         echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$docName['document_name']}</a></td>";
-                        echo "<td>{$loaning['fromUser']}</td>";
+                        echo "<td>{$loaning['user_name']}</td>";
                         echo "<td>{$loaning['start_date']}</td>";
                         echo "<td>{$loaning['end_date']}</td></tr>";
                     }
@@ -88,18 +87,16 @@ endblock() ?>
             }
 
             echo "<h3><a href='loanings.php'>Books you borrowed</a><hr/></h3>";
-            $query = $con->prepare("select * from Loaning  limit 5"); //TODO where user=?
-            $query2 = $con->prepare("select count(*) from Loaning"); //TODO where user=?
+            $query = $con->prepare("select * from Loaning,User where User.email=Loaning.fromUser and Loaning.toUser='{$_SESSION['email']}' limit 5"); //TODO where user=?
             $query->execute();
-            $query2->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th>Book</th>";
                     echo "<th>Borrowed from</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    if($query2->fetchColumn()>5) {
-                        echo "<tfoot align='right'> 
+                    if($query->rowCount()>5) {
+                        echo "<tfoot align='right'>
                                 <tr >
                                     <td colspan='4'> <a href='loanings.php'>See more...</a></td>
                                 </tr>
@@ -118,7 +115,7 @@ endblock() ?>
                         $query2->execute();
                         $docName = $query2->fetch();
                         echo "<tr id='$idvar' ><td><a href='book.php?book={$loaning['docID']}'>{$docName['document_name']}</a></td>";
-                        echo "<td>{$loaning['fromUser']}</td>";
+                        echo "<td>{$loaning['user_name']}</td>";
                         echo "<td>{$loaning['start_date']}</td>";
                         echo "<td>{$loaning['end_date']}</td></tr>";
                     }

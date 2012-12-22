@@ -7,7 +7,10 @@ endblock() ?>
   echo "<div class='main'>";
         echo "<div class='blockHeader'> <h2>Personal Library</h2></div>";
         echo "<div class='blockContent'>";
-            $query = $con->prepare("select * from Document");
+            $query = $con->prepare("select Document.* from Document
+                join PaperDoc on (Document.docID=PaperDoc.docID) where PaperDoc.email='{$_SESSION['email']}' union
+                select Document.* from Document
+                join ElectronicDocCopies on (Document.docID=ElectronicDocCopies.docID) where ElectronicDocCopies.email='{$_SESSION['email']}'");
             $query->execute();
             if($query->rowCount()>0) {
                 echo "<table>";

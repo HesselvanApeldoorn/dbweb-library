@@ -10,12 +10,12 @@ endblock() ?>
         echo "<div class='blockHeader'><h2>Loanings</h2></div>";
         echo "<div class='blockContent'>";
             echo "<h3>Books you lent<hr/></h3>";
-            $query = $con->prepare('select * from Loaning');
+            $query = $con->prepare("select * from Loaning,User where User.email=Loaning.toUser and Loaning.fromUser='{$_SESSION['email']}' limit 5"); //TODO where user=?
             $query->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th>Book</th>";
-                    echo "<th>Lent from</th>";
+                    echo "<th>Lent to</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
 
@@ -31,7 +31,7 @@ endblock() ?>
                         $query2->execute();
                         $docName = $query2->fetch();
                         echo "<tr id='$idvar'><td><a href='book.php?book={$loaning['docID']}'>{$docName['document_name']}</a></td>";
-                        echo "<td>{$loaning['fromUser']}</td>";
+                        echo "<td>{$loaning['user_name']}</td>";
                         echo "<td>{$loaning['start_date']}</td>";
                         echo "<td>{$loaning['end_date']}</td></tr>";
                     }
@@ -43,7 +43,7 @@ endblock() ?>
                 echo "<input type='submit' value='Lend a book' />";
             echo "</form>";
             echo "<h3>Books you borrowed<hr/></h3>";
-            $query = $con->prepare('select * from Loaning');
+            $query = $con->prepare("select * from Loaning,User where User.email=Loaning.fromUser and Loaning.toUser='{$_SESSION['email']}' limit 5"); //TODO where user=?
             $query->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
@@ -64,11 +64,11 @@ endblock() ?>
                         $query2->execute();
                         $docName = $query2->fetch();
                         echo "<tr id='$idvar'><td><a href='book.php?book={$loaning['docID']}'>{$docName['document_name']}</a></td>";
-                        echo "<td>{$loaning['fromUser']}</td>";
+                        echo "<td>{$loaning['user_name']}</td>";
                         echo "<td>{$loaning['start_date']}</td>";
                         echo "<td>{$loaning['end_date']}</td></tr>";
                     }
-                echo "</table>"; 
+                echo "</table>";
             } else {
                 echo "There are no loanings currently.";
             }
