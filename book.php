@@ -43,16 +43,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $query = $con->prepare($sql);
         $query->execute(array($docID, $distributable,$electronicDoc['extension'], $electronicDoc['content']));
         $categories = $_POST['category'];
-        foreach($categories as $category) { 
+        foreach($categories as $category) {
             $sql = "insert into DocCategory values(?,?)";
-            $query = $con->prepare($sql); 
+            $query = $con->prepare($sql);
             $query->execute(array($docID, $category));
         }
     }
     header("location:personalLibrary.php");
 } else { //method is GET
     startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; Document";
+        echo "<a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; Document";
     endblock();
     startblock('content');
         $sql = "select * from Document where docID=?";
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                         echo "<hr/>";
                         echo "<h4>ISBN</h4>";
                         echo "<input type='text' name='isbn' value='{$book['isbn']}'/>";
-                        echo "<hr/>";           
+                        echo "<hr/>";
                         $sql = "select * from PaperDoc where docID =?";
                         $query = $con->prepare($sql);
                         $query->execute(array($_GET['book']));

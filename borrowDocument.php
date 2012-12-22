@@ -23,7 +23,7 @@
     </script>
 <?php endblock() ?>
 <?php startblock('header');
-    echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Borrow";
+    echo "<a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Borrow";
 endblock() ?>
 <?php startblock('content');
     echo "<div class='main'>";
@@ -34,14 +34,14 @@ endblock() ?>
                     echo "Start date: " . $_REQUEST['start'];
                     echo "<br/>End date: ".$_REQUEST['end'];
                     echo "<p>Your start date is after the end date.</p>";
-                    echo "<a href=''>Retry</a>"; 
+                    echo "<a href=''>Retry</a>";
                 } else {
                     $sql = "insert into Notification (email, message, notify_date) values(?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array("sample@hotmail.com","Cagri has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
-                    header("location:personalLibrary.php");                    
+                    header("location:personalLibrary.php");
                 }
-            } else { # method is GET   
+            } else { # method is GET
                 $sql = "select * from PaperDoc";
                 $query = $con->prepare($sql);
                 $query->execute();
@@ -65,6 +65,6 @@ endblock() ?>
                     echo "There are no books to be borrowed currently.";
                 }
             }
-        echo "</div>";  
+        echo "</div>";
     echo "</div>";
 endblock() ?>

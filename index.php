@@ -1,7 +1,7 @@
 <?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('header');
-        echo "Welcome, Cagri, you are here: Home";
+        echo "Home";
 endblock() ?>
 <?php startblock('content');
     echo "<div class='library'>";

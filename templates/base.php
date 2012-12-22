@@ -20,9 +20,15 @@ try {
     </head>
     <body>
         <div class='header'>
-                <?php startblock('header') ?>
-                <?php endblock() ?>
-                <a id='logout' href='logout.php'>Log out</a>
+        <?php
+            $sql = "select user_name from User where email = ?";
+            $q = $con->prepare($sql);
+            $q->execute(array($_SESSION['email']));
+            $name_of_user =  $q->fetchColumn();
+            echo "Welcome, $name_of_user, you are here: "; ?>
+            <?php startblock('header') ?>
+            <?php endblock() ?>
+            <a id='logout' href='logout.php'>Log out</a>
         </div>
 
         <div class='container'>

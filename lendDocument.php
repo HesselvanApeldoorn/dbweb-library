@@ -23,7 +23,7 @@
     </script>
 <?php endblock() ?>
 <?php startblock('header');
-    echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Lend";
+    echo "<a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; <a href='loanings.php'>Loanings</a> &raquo; Lend";
 endblock() ?>
 <?php startblock('content');
     echo "<div class='main'>";

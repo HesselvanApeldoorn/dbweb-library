@@ -3,7 +3,7 @@
             ini_set("display_errors", 1); ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; Notifications";
+        echo "<a href='index.php'>Home</a> &raquo; Notifications";
 endblock() ?>
 <?php startblock('content');
     echo "<div class='main'>";

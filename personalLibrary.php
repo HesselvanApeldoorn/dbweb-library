@@ -1,7 +1,7 @@
 <?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('header');
-        echo "Welcome, Cagri, you are here: <a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; Personal Library";
+        echo "<a href='index.php'>Home</a> &raquo; <a href='personal.php'>Personal Page</a> &raquo; Personal Library";
 endblock() ?>
 <?php startblock('content');
   echo "<div class='main'>";
