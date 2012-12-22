@@ -9,7 +9,7 @@
         <link href="static/css/base.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <?php 
+        <?php
             try { //Setting up the database connection
                 $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
             } catch (PDOException $e) {
@@ -41,22 +41,35 @@
                             send_mail($_REQUEST['email'], $confirm_code);
                             echo "A confirmation link has been sent to your email account";
                         }
-                            
                     }
                 }
             } else {
-                echo "<div class='account'>";
-                    echo "<div class='accountHeader'>
-                            <h2>Registration</h2>
-                          </div>";
-                    echo "<div class='accountContent'>";
-                        echo "<form method = 'post'>";
-                        echo "Email: <input type = 'text' name = 'email'/> <br/>";
-                        echo "Username: <input type = 'text' name = 'user_name'/> <br/>";
-                        echo "Password: <input type = 'password' name = 'password'/> <br/>";
-                        echo "Retype password: <input type = 'password' name = 'rePassword'/> <br/>";
-                        echo "<input type = 'submit' name = 'submit' value = 'Register'> <br/>
-                            </form>";
+                echo "<div class='accountContainer'>";
+                    echo "<div class='account'>";
+                        echo "<div class='accountHeader'>
+                                <h2>Registration</h2>
+                              </div>";
+                        echo "<div class='accountContent'>";
+                            echo "<form method = 'post'>";
+                                echo "<table id='nonborder'";
+                                        echo "<tr id='nonborder'>";
+                                            echo "<td>Email:</td><td> <input type = 'text' name = 'email'/> <br/></td>";
+                                        echo "</tr>";
+                                        echo "<tr>";
+                                            echo "<td>Username:</td><td> <input type = 'text' name = 'user_name'/> <br/></td>";
+                                        echo "</tr>";
+                                        echo "<tr>";
+                                            echo "<td>Password:</td><td> <input type = 'password' name = 'password'/> <br/></td>";
+                                        echo "</tr>";
+                                        echo "<tr>";
+                                            echo "<td>Retype password:</td><td> <input type = 'password' name = 'rePassword'/> <br/></td>";
+                                        echo "</tr>";
+                                        echo "<tr>";
+                                            echo "<td><input type = 'submit' name = 'submit' value = 'Register'> <br/></td>";
+                                        echo "</tr>";
+                                echo "</table>";
+                            echo "</form>";
+                        echo "</div>";
                     echo "</div>";
                 echo "</div>";
             }
@@ -68,7 +81,7 @@
 function send_mail() {
     $message = "Dear {$_REQUEST['user_name']},\n\nTo activate your library account, please click on this link:\n";
     $url = str_replace(curPageName(),"",curPageUrl());
-    
+
     $message .= $url . 'activate.php?email=' . urlencode($_REQUEST['email']) . "&confirm_code={$_SESSION['confirm_code']} \n\n Kind regards,\n\n The libdev team";
     mail($_REQUEST['email'], 'Registration Confirmation', $message, 'From:no-reply@libDev.com');
 

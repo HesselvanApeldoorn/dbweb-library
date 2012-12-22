@@ -120,7 +120,7 @@ table {
     border-collapse: collapse;
 }
 
-/********************************************* Login page styling *********************************************/
+/********************************************* Register/Login page styling *********************************************/
 
 .accountHeader {
     background-color: wheat;
@@ -134,7 +134,7 @@ table {
 }
 
 .accountContainer {
-    height: auto;  
+    height: auto;
     left: 50%;
     margin-left: -175px;
     margin-top: -175px;
@@ -156,11 +156,16 @@ table {
 
 .accountContent {
     padding: 10px;
+    vertical-align: bottom;
 }
 
 #login, .email, .password {
     float: left;
     clear: both;
+}
+
+#nonborder td {
+    border: none;
 }
 
 

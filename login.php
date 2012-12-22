@@ -47,22 +47,23 @@
                             if (isset($_REQUEST['email'])) {
                                 echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
                             }
-                            echo "<form method='post'>
-                                <div class='email'>";
-                                if(isset($_REQUEST['email'])) {
-                                        echo "E-mail: <input type='text' name='email' id='email' value={$_REQUEST['email']}> ";
-                                } else {
-                                        echo "E-mail: <input type='text' name='email' id='email'>";
-                                    }
-                                echo "</div>";
-                                echo "
-                                <div class='password'>
-                                    Password: <input type='password' name='password' id='password'>
-                                </div>";
-                                echo "<input type='submit' name='login' id='login' value='login' />
-                            </form>
-                        </div>
-                    </div>
+                            echo "<form method='post'>";
+                                echo "<table id='nonborder'";
+                                    echo "<tr>";
+                                    if(isset($_REQUEST['email'])) {
+                                            echo "<td>E-mail:</td><td> <input type='text' name='email' id='email' value={$_REQUEST['email']}></td> ";
+                                    } else {
+                                            echo "<td>E-mail:</td><td> <input type='text' name='email' id='email'></td>";
+                                        }
+                                    echo "</tr>";
+                                    echo "<tr>
+                                        <td>Password:</td><td> <input type='password' name='password' id='password'</td>
+                                    </tr>";
+                                    echo "<tr><td><input type='submit' name='login' id='login' value='login' /></td></tr>";
+                                echo "</table>";
+                            echo "</form>";
+                        echo "</div>";
+                    echo "</div>
                     <div style='clear:both; float: right' >
                         <a href='register.php'>Register</a>
                         <a href='forgotPw.php'>Forgot password?</a>

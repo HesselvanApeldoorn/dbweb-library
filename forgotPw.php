@@ -9,7 +9,7 @@
         <link href="static/css/base.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <?php 
+        <?php
             try { //Setting up the database connection
                 $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
             } catch (PDOException $e) {
@@ -59,7 +59,7 @@
 function send_mail($newPass, $user_name) {
     $message = "Dear $user_name,\n\nThis is your new password:\n$newPass\n\n";
     $url = str_replace(curPageName(),"",curPageUrl());
-    
+
     $message .= "Now back to the library:\n". $url . "\n\n Kind regards,\n\n The libdev team";
     mail($_REQUEST['email'], 'Registration Confirmation', $message, 'From:no-reply@libDev.com');
 
