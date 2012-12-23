@@ -38,16 +38,18 @@
                     }
                 }
             } else {
-                echo "<div class='account'>";
-                    echo "<div class='accountHeader'>
-                            <h2>Retrieve password</h2>
-                          </div>";
-                    echo "<div class='accountContent'>";
-                        echo "Fill in the email address to which the new password must be send";
-                        echo "<form method = 'post'>";
-                        echo "Email: <input type = 'text' name = 'email'/> <br/>";
-                        echo "<input type = 'submit' name = 'submit' value = 'Send mail'> <br/>
-                            </form>";
+                echo "<div class='accountContainer'>";
+                    echo "<div class='account'>";
+                        echo "<div class='accountHeader'>
+                                <h2>Retrieve password</h2>
+                              </div>";
+                        echo "<div class='accountContent'>";
+                            echo "Fill in the email address to which the new password must be send";
+                            echo "<form method = 'post'>";
+                            echo "Email: <input type = 'text' name = 'email'/> <br/>";
+                            echo "<input type = 'submit' name = 'submit' value = 'Send mail'> <br/>
+                                </form>";
+                        echo "</div>";
                     echo "</div>";
                 echo "</div>";
             }

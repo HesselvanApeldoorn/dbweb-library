@@ -36,7 +36,7 @@ endblock() ?>
             } else { //No documents
                 echo "There are no documents currently.";
             }
-            echo "<hr/><form>";
+            echo "<hr/><form method='get' action='newDocument.php'>";
                 echo "<input type='submit' value='Upload new Document' />";
             echo "</form";
 
