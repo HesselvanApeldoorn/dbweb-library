@@ -27,20 +27,21 @@
                     $q->execute(array($_REQUEST['email']));
                     if($q->fetchColumn()!=0) {
                        echo "Email already exists, <a href='register.php'> retry</a>";
+                    } else if (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
+                        echo "Invalid email address, <a href='register.php'> retry</a>";
+                    } else if (!passRequirements($_REQUEST['password'])) {
+                        echo "Password should be at least 8 characters long. It should also contain at least 1 Capital letter, 1 lower case letter and 1 digit.
+                        Special characters are not allowed. <a href='register.php'> retry</a>";
                     } else {
-                        if(!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
-                            echo "Invalid email address, <a href='register.php'> retry</a>";
-                        } else {
-                            $sql = "INSERT INTO User (email,user_name,password) VALUES (?,?,?)";
-                            $q = $con->prepare($sql);
-                            $q->execute(array($_REQUEST['email'],$_REQUEST['user_name'], hash("sha512",$_REQUEST['password'])));
-                            $confirm_code = md5(uniqid(rand()));
-                            $_SESSION['confirm_code'] = $confirm_code;
-                            $_SESSION['regEmail'] = $_REQUEST['email'];
-                            $_SESSION['confirmed'] = false;
-                            send_mail($_REQUEST['email'], $confirm_code);
-                            echo "A confirmation link has been sent to your email account";
-                        }
+                        $sql = "INSERT INTO User (email,user_name,password) VALUES (?,?,?)";
+                        $q = $con->prepare($sql);
+                        $q->execute(array($_REQUEST['email'],$_REQUEST['user_name'], hash("sha512",$_REQUEST['password'])));
+                        $confirm_code = md5(uniqid(rand()));
+                        $_SESSION['confirm_code'] = $confirm_code;
+                        $_SESSION['regEmail'] = $_REQUEST['email'];
+                        $_SESSION['confirmed'] = false;
+                        send_mail($_REQUEST['email'], $confirm_code);
+                        echo "A confirmation link has been sent to your email account";
                     }
                 }
             } else {
@@ -99,5 +100,30 @@ function curPageURL() {
 
 function curPageName() {
  return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+}
+
+function passRequirements($password) {
+    if(strlen($password)<8) {
+        return false;
+    } else {
+        $upper=false;
+        $lower=false;
+        $digit=false;
+        for($i=0; $i<strlen($password); $i++) {
+            if (ctype_upper($password[$i])) {
+                $upper=true;
+            } else if (ctype_lower($password[$i])) {
+                $lower=true;
+            } else if (ctype_digit($password[$i])) {
+                $digit=true;
+            } else { // Special characters not allowed
+                return false;
+            }
+        }
+        if($digit and $lower and $upper) {
+            return true;
+        }
+        return false;
+    }
 }
 ?>

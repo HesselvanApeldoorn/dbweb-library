@@ -46,9 +46,9 @@
                         echo "<div class='accountContent'>";
                             echo "Fill in the email address to which the new password must be send";
                             echo "<form method = 'post'>";
-                            echo "Email: <input type = 'text' name = 'email'/> <br/>";
-                            echo "<input type = 'submit' name = 'submit' value = 'Send mail'> <br/>
-                                </form>";
+                                echo "Email: <input type = 'text' name = 'email'/> <br/>";
+                                echo "<input type = 'submit' name = 'submit' value = 'Send mail'> <br/>";
+                            echo "</form>";
                         echo "</div>";
                     echo "</div>";
                 echo "</div>";
