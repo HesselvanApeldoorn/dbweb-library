@@ -35,9 +35,27 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $query = $con->prepare($sql);
         $query->execute(array($docID, $_SESSION['email']));
 
+        # handle file
+        if($_FILES['content']['size'] > 0) {
+            $fileName = $_FILES['content']['name'];
+            $tmpName  = $_FILES['content']['tmp_name'];
+            $fileSize = $_FILES['content']['size'];
+            $fileType = $_FILES['content']['type'];
+
+            $fp      = fopen($tmpName, 'r');
+            $content = fread($fp, filesize($tmpName));
+            $content = addslashes($content);
+            fclose($fp);
+            if(!get_magic_quotes_gpc())
+            {
+                $fileName = addslashes($fileName);
+            }
+        }
+
+
         $sql = "insert into ElectronicDoc (docID, distributable, extension, content) values(?,?,?,?)";
         $query = $con->prepare($sql);
-        $query->execute(array($docID, $distributable,$_REQUEST['extension'], $_REQUEST['content']));
+        $query->execute(array($docID, $distributable,$_REQUEST['extension'], $content));
         $categories = $_POST['category'];
         foreach($categories as $category) {
             $sql = "insert into DocCategory values(?,?)";
@@ -65,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         echo "<div class='main'>";
             echo "<div class='blockHeader'> <h2>Add a new document</h2></div>";
             echo "<div class='blockContent'>";
-                echo "<form method='post'>";
+                echo "<form method='post' enctype='multipart/form-data'>";
                     echo "<hr/>";
                     echo "<h4>Name</h4>";
                     echo "<input type='text' name='document_name' value=''/>";
@@ -120,7 +138,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                         echo "<input type='text' name='extension' value=''/>";
                         echo "<hr/>";
                         echo "<h4>Content</h4>";
-                        echo "<input type='text' name='content' value=''/>";
+                        echo "<input type='hidden' name='MAX_FILE_SIZE' value='20000000'>";
+                        echo "<input type='file' name='content' id='file'><br>";
                         echo "<hr/>";
                         echo "<input type='submit' value='Add Document'/>";
                     echo "</div>";
