@@ -144,14 +144,20 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                             echo "<hr/>";
                             echo "<h4>Extension</h4>";
                             echo $electronicDoc['extension'];
-                            echo "<hr/>";
-                            echo "<h4>Content</h4>";
-                            echo $electronicDoc['content'];
                         }
                         echo "<hr/>";
                         echo "<input type='submit' value='Apply changes'/>";
                         echo "<input type='submit' value='Discard changes'/>";
                     echo "</form>";
+                    if (!isset($paperDoc['docID'])) {
+                        echo "<hr/>";
+                        echo "<h4>Content</h4>";
+                        $id=$_GET['book'];
+                        echo $id;
+                        echo "<form method='get' action='download.php?id=".$id."'>";
+                            echo "<input type='submit' value='Download file'/>";
+                        echo "</form>";
+                    }
                 }
             echo "</div>";
         echo "</div>";
