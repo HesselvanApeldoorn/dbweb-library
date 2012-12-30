@@ -27,20 +27,25 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
         } else {
             $distributable=0;
         }
+
+        # Get current information stored in the document
         $sql = "select * from ElectronicDoc where docID=?";
         $query = $con->prepare($sql);
         $query->execute(array($_GET['book']));
         $electronicDoc = $query->fetch();
 
+        # Insert the changed document as a new document
         $sql = "insert into Document (author, description, document_name, visible, isbn) values(?, ?, ?, ?, ?)";
         $query = $con->prepare($sql);
         $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn']));
         $docID = $con->lastInsertId();
 
+        # Link user to the proper document and unlink from old document
         $sql = "update ElectronicDocCopies set docID=? where docID=? and email='{$_SESSION['email']}'";
         $query = $con->prepare($sql);
         $query->execute(array($docID, str_replace('"','',$_GET['book'])));
 
+        #Insert the changed document as a new electronic document
         $sql = "insert into ElectronicDoc values(?,?,?,?,?)";
         $query = $con->prepare($sql);
         $query->execute(array($docID, $distributable,$electronicDoc['extension'], $electronicDoc['content'], $electronicDoc['size']));
@@ -49,6 +54,22 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
             $sql = "insert into DocCategory values(?,?)";
             $query = $con->prepare($sql);
             $query->execute(array($docID, $category));
+        }
+
+        # Delete old document if this was the single user that possessed it.
+        $sql = "select count(*) from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_GET['book'])));
+        if ($query->rowCount()<=1) { # single user
+            $sql = "delete from ElectronicDoc where docID=?";
+            $query = $con->prepare($sql);
+            $query->execute(array(str_replace('"','',$_GET['book'])));
+            $sql = "delete from DocCategory where docID=?";
+            $query = $con->prepare($sql);
+            $query->execute(array(str_replace('"','',$_GET['book'])));
+            $sql = "delete from Document where docID=?";
+            $query = $con->prepare($sql);
+            $query->execute(array(str_replace('"','',$_GET['book'])));
         }
     }
     header("location:personalLibrary.php");
