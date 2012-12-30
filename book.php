@@ -1,7 +1,9 @@
 <?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php
-if ($_SERVER['REQUEST_METHOD']=='POST') {
+if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
+    header("location:personalLibrary.php");
+} elseif ($_SERVER['REQUEST_METHOD']=='POST') {
     if ($_REQUEST['visible']=='visible') {
         $visible=1;
     } else {
@@ -35,13 +37,13 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn']));
         $docID = $con->lastInsertId();
 
-        $sql = "update ElectronicDocCopies set docID=? where docID=? and email='sample@hotmail.com'";
+        $sql = "update ElectronicDocCopies set docID=? where docID=? and email='{$_SESSION['email']}'";
         $query = $con->prepare($sql);
         $query->execute(array($docID, str_replace('"','',$_GET['book'])));
 
-        $sql = "insert into ElectronicDoc values(?,?,?,?)";
+        $sql = "insert into ElectronicDoc values(?,?,?,?,?)";
         $query = $con->prepare($sql);
-        $query->execute(array($docID, $distributable,$electronicDoc['extension'], $electronicDoc['content']));
+        $query->execute(array($docID, $distributable,$electronicDoc['extension'], $electronicDoc['content'], $electronicDoc['size']));
         $categories = $_POST['category'];
         foreach($categories as $category) {
             $sql = "insert into DocCategory values(?,?)";
@@ -119,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                             echo "<input type = 'radio' checked name = 'visible' value='notvisible' >not visible";
                         }
                         echo "<hr/>";
-                        if (isset($paperDoc['docID'])) {
+                        if (isset($paperDoc['docID'])) { #paper doc
                             echo "<h4>Quality</h4>";
                             echo "Current: ".$paperDoc['state']."</br>";
                             echo "<select name='state'>";
@@ -128,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                                 echo "<option value='decent'>decent</option>";
                                 echo "<option value='poor'>poor</option>";
                             echo "</select>";
-                        } else {
+                        } else { #electronic doc
                             $sql = "select * from ElectronicDoc where docID =?";
                             $query = $con->prepare($sql);
                             $query->execute(array($_GET['book']));
@@ -144,20 +146,20 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                             echo "<hr/>";
                             echo "<h4>Extension</h4>";
                             echo $electronicDoc['extension'];
+                            echo "<hr/>";
+                            echo "<h4>Size</h4>";
+                            echo $electronicDoc['size']." Bytes";
+                        }
+                        if (!isset($paperDoc['docID'])) { #electronic doc, downloadble
+                            echo "<hr/>";
+                            echo "<h4>Content</h4>";
+                            $id=$_GET['book'];
+                            echo "Download: <a href='download.php?id=".$id."'>{$book['document_name']}</a>";
                         }
                         echo "<hr/>";
-                        echo "<input type='submit' value='Apply changes'/>";
-                        echo "<input type='submit' value='Discard changes'/>";
+                        echo "<input type='submit' name='apply' value='Apply changes'/>";
+                        echo "<input type='submit' name='discard' value='Discard changes'/>";
                     echo "</form>";
-                    if (!isset($paperDoc['docID'])) {
-                        echo "<hr/>";
-                        echo "<h4>Content</h4>";
-                        $id=$_GET['book'];
-                        echo $id;
-                        echo "<form method='get' action='download.php?id=".$id."'>";
-                            echo "<input type='submit' value='Download file'/>";
-                        echo "</form>";
-                    }
                 }
             echo "</div>";
         echo "</div>";

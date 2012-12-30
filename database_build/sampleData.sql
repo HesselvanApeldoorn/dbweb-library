@@ -39,10 +39,10 @@ INSERT INTO PaperDoc VALUES(10, 'good', 'sample@hotmail.com');
 INSERT INTO PaperDoc VALUES(11, 'poor', 'sample2@hotmail.com');
 INSERT INTO PaperDoc VALUES(12, 'new', 'sample3@hotmail.com');
 
-INSERT INTO ElectronicDoc VALUES(5,True, 'odp', 'f5');
-INSERT INTO ElectronicDoc VALUES(6,False, 'odp', 'f6');
-INSERT INTO ElectronicDoc VALUES(7,True, 'odp', 'f7');
-INSERT INTO ElectronicDoc VALUES(8,True, 'pdf', 'f8');
+INSERT INTO ElectronicDoc VALUES(5,True, 'odp', 'f5', 5000000);
+INSERT INTO ElectronicDoc VALUES(6,False, 'odp', 'f6', 5000000);
+INSERT INTO ElectronicDoc VALUES(7,True, 'odp', 'f7', 5000000);
+INSERT INTO ElectronicDoc VALUES(8,True, 'pdf', 'f8', 5000000);
 
 
 INSERT INTO ElectronicDocCopies VALUES('sample@hotmail.com', 5);

@@ -26,16 +26,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         } else {
             $distributable=0;
         }
-        $sql = "insert into Document (author, description, document_name, visible, isbn) values(?, ?, ?, ?, ?)";
-        $query = $con->prepare($sql);
-        $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$_REQUEST['document_name'],$visible,$_REQUEST['isbn']));
-        $docID = $con->lastInsertId();
-
-        $sql = "insert into ElectronicDocCopies (docID,email) values (?,?)";
-        $query = $con->prepare($sql);
-        $query->execute(array($docID, $_SESSION['email']));
-
-        # handle file
+                # handle file
         if($_FILES['content']['size'] > 0) {
             $fileName = $_FILES['content']['name'];
             $tmpName  = $_FILES['content']['tmp_name'];
@@ -50,12 +41,22 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             {
                 $fileName = addslashes($fileName);
             }
+        } else {
+            echo "Something went wrong with your uploaded file. <a href='#'>Retry?</a>";
         }
 
-
-        $sql = "insert into ElectronicDoc (docID, distributable, extension, content) values(?,?,?,?)";
+        $sql = "insert into Document (author, description, document_name, visible, isbn) values(?, ?, ?, ?, ?)";
         $query = $con->prepare($sql);
-        $query->execute(array($docID, $distributable,$_REQUEST['extension'], $content));
+        $query->execute(array($_REQUEST['author'],$_REQUEST['description'],$fileName,$visible,$_REQUEST['isbn']));
+        $docID = $con->lastInsertId();
+
+        $sql = "insert into ElectronicDocCopies (docID,email) values (?,?)";
+        $query = $con->prepare($sql);
+        $query->execute(array($docID, $_SESSION['email']));
+
+        $sql = "insert into ElectronicDoc (docID, distributable, extension, size, content) values(?,?,?,?,?)";
+        $query = $con->prepare($sql);
+        $query->execute(array($docID, $distributable, $fileType, $fileSize, $content));
         $categories = $_POST['category'];
         foreach($categories as $category) {
             $sql = "insert into DocCategory values(?,?)";
@@ -84,9 +85,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             echo "<div class='blockHeader'> <h2>Add a new document</h2></div>";
             echo "<div class='blockContent'>";
                 echo "<form method='post' enctype='multipart/form-data'>";
-                    echo "<hr/>";
-                    echo "<h4>Name</h4>";
-                    echo "<input type='text' name='document_name' value=''/>";
                     echo "<hr/>";
                     echo "<h4>Author</h4>";
                     echo "<input type='text' name='author' value=''/>";
@@ -119,6 +117,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                     echo "<input type = 'radio' name = 'docType' onclick='enable(2);' value='electronic' />electronic<br/>";
                     echo "<hr/>";
                     echo "<div id='paper' style='display: none'>";
+                        echo "<hr/>";
+                        echo "<h4>Name</h4>";
+                        echo "<input type='text' name='document_name' value=''/>";
                         echo "<h4>Quality</h4>";
                         echo "<select name='state'>";
                             echo "<option value='new'>new</option>";
@@ -133,9 +134,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                         echo "<h4>Distributable</h4>";
                         echo "<input type = 'radio' name = 'distributable' value='distributable' />distributable<br/>";
                         echo "<input type = 'radio' name = 'distributable' value='notdistributable' />not distributable";
-                        echo "<hr/>";
-                        echo "<h4>Extension</h4>";
-                        echo "<input type='text' name='extension' value=''/>";
                         echo "<hr/>";
                         echo "<h4>Content</h4>";
                         echo "<input type='hidden' name='MAX_FILE_SIZE' value='20000000'>";

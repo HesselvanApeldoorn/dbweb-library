@@ -1,22 +1,18 @@
+<?php require 'templates/base.php' ?>
 <?php
-if(isset($_GET['id']))
-{
-	// if id is set then get the file with the id from database
+$id    = $_GET['id'];
+$sql = "SELECT content, extension, size FROM ElectronicDoc WHERE docID = ?";
+$query = $con->prepare($sql);
+$query->execute(array($id));
+$fileInfo = $query->fetch();
 
-	$id    = $_GET['id'];
-	$query = "SELECT content " .
-	         "FROM ElectronicDoc WHERE id = '$id'";
+$sql = "SELECT * FROM Document WHERE docID = ?";
+$query = $con->prepare($sql);
+$query->execute(array($id));
+$fileName = $query->fetch();
 
-	$result = mysql_query($query) or die('Error, query failed');
-	list($content) = mysql_fetch_array($result);
-
-	//header("Content-length: $size");
-	//header("Content-type: $type");
-	$name="downloaded file";
-	header("Content-Disposition: attachment; filename=$name");
-	echo $content;
-
-	exit;
-}
-
+header("Content-length: {$fileInfo['size']}");
+header("Content-type: {$fileInfo['extension']}");
+header("Content-Disposition: attachment; filename={$fileName['document_name']}");
+exit;
 ?>
