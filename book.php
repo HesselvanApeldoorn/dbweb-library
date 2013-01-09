@@ -82,17 +82,23 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                 left join ElectronicDocCopies on Document.docID=ElectronicDocCopies.docID where Document.docID=?";
         $query = $con->prepare($sql);
         $query->execute(array($_GET['book']));
-        $book = $query->fetch();
         echo "<div class='main'>";
             echo "<div class='blockHeader'> <h2>Document: {$book['document_name']}</h2></div>";
             echo "<div class='blockContent'>";
-                if (!$book) {
+                if (False) {
                     echo "Document not found";
                 } else {
                     $ownBook = False;
-                    if ($book['email']==$_SESSION['email']) {
-                        $ownBook = True;
+                    foreach($query as $bookRow) {
+                        if ($bookRow['email']==$_SESSION['email']) {
+                            $ownBook = True;
+                        }
                     }
+                    $sql = "select * from Document left join PaperDoc on Document.docID=PaperDoc.docID
+                    left join ElectronicDocCopies on Document.docID=ElectronicDocCopies.docID where Document.docID=?";
+                    $query = $con->prepare($sql);
+                    $query->execute(array($_GET['book']));
+                    $book = $query->fetch();
                     if (!$ownBook and !$book['visible']) {
                         echo "You are not allowed to view this document.";
                     } else {
