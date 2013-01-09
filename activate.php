@@ -15,9 +15,9 @@
         <?php 
             if($_SESSION['confirmed']==false && $_SESSION['regEmail']==$_GET['email'] && $_SESSION['confirm_code']==$_GET['confirm_code']) {
                 $_SESSION['confirmed'] = true;
-                echo "Your account has been activated succesfully! <a href=login.php>Login</a>";
+                header("Location: login.php?activate=success&email={$_REQUEST['email']}");
             } else {
-                echo "You've already confirmed your account";
+                header("Location: login.php?activate=already_confirmed&email={$_REQUEST['email']}");
             }
         ?>
     </body>

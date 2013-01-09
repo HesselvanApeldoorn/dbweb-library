@@ -28,13 +28,12 @@
                     $correct_account = $query->fetchColumn();
                     if ($correct_account ==0) {
                         header("Location: login.php?email={$_REQUEST['email']}");
-                        echo "incorrect account credentials.<br/> <a href='login.php'>Retry</a>";
                     } else {
                         $_SESSION['email']=$_REQUEST['email'];
                         header("Location: index.php");
                     }
                 } else {
-                    echo "Your account has not been activated yet. You should've received an activation mail.";
+                    header("Location: login.php?activate=not_activated&email={$_REQUEST['email']}");
                 }
             } else {
                 echo "
@@ -44,17 +43,25 @@
                             <h2>Log in</h2>
                         </div>
                         <div class='accountContent'>";
-                            if (isset($_REQUEST['email'])) {
+                            if(isset($_REQUEST['activate']) && $_REQUEST['activate']=='success') {
+                                echo "<div style='color: red' class='error'>Your account has been activated succesfully</div>";   
+                            } else if(isset($_REQUEST['activate']) && $_REQUEST['activate']=='already_confirmed') {
+                                echo "<div style='color: red' class='error'>Your account is already activated</div>";   
+                            } else if(isset($_REQUEST['activate']) && $_REQUEST['activate']=='not_activated') {
+                                echo "<div style='color: red' class='error'>Your account has not been activated yet. You should've received an activation email</div>";   
+                            } else if(isset($_REQUEST['newpass']) && $_REQUEST['newpass']==1) {
+                                echo "<div style='color: red' class='error'>Your new password is sent to your email address</div>";
+                            } else if (isset($_REQUEST['email'])) {
                                 echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
                             }
                             echo "<form method='post'>";
                                 echo "<table id='nonborder'";
                                     echo "<tr>";
                                     if(isset($_REQUEST['email'])) {
-                                            echo "<td>E-mail:</td><td> <input type='text' name='email' id='email' value={$_REQUEST['email']}></td> ";
+                                        echo "<td>E-mail:</td><td> <input type='text' name='email' id='email' value='{$_REQUEST['email']}' /></td> ";
                                     } else {
-                                            echo "<td>E-mail:</td><td> <input type='text' name='email' id='email'></td>";
-                                        }
+                                        echo "<td>E-mail:</td><td> <input type='text' name='email' id='email'></td>";
+                                    }
                                     echo "</tr>";
                                     echo "<tr>
                                         <td>Password:</td><td> <input type='password' name='password' id='password'</td>

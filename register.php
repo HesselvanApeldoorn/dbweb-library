@@ -17,21 +17,20 @@
                 die();
             }
             if($_SERVER['REQUEST_METHOD']=='POST') {
-                 if(!isset($_REQUEST['user_name']) || !isset($_REQUEST['password']) || !isset($_REQUEST['email']) || $_REQUEST['email']==''|| $_REQUEST['user_name']=='' || $_REQUEST['password']=='') {
-                    echo "All the fields are required, <a href='register.php'> retry</a>";
+                 if(!isset($_REQUEST['user_name']) || $_REQUEST['user_name']=='') {
+                    header("Location: register.php?error=invalid_username&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                 } else if($_REQUEST['password']!=$_REQUEST['rePassword']) {
-                    echo "You didn't enter the same password twice, please <a href='register.php'> retry</a>";
+                    header("Location: register.php?error=different_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                 } else {
                     $sql = "select count(*) from User where email=?";
                     $q = $con->prepare($sql);
                     $q->execute(array($_REQUEST['email']));
                     if($q->fetchColumn()!=0) {
-                       echo "Email already exists, <a href='register.php'> retry</a>";
+                        header("Location: register.php?error=existing_email&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                     } else if (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
-                        echo "Invalid email address, <a href='register.php'> retry</a>";
+                        header("Location: register.php?error=invalid_email&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                     } else if (!passRequirements($_REQUEST['password'])) {
-                        echo "Password should be at least 8 characters long. It should also contain at least 1 Capital letter, 1 lower case letter and 1 digit.
-                        Special characters are not allowed. <a href='register.php'> retry</a>";
+                        header("Location: register.php?error=incorrect_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                     } else {
                         $sql = "INSERT INTO User (email,user_name,password) VALUES (?,?,?)";
                         $q = $con->prepare($sql);
@@ -51,13 +50,34 @@
                                 <h2>Registration</h2>
                               </div>";
                         echo "<div class='accountContent'>";
+                            if(isset($_REQUEST['error']) && $_REQUEST['error']=='existing_email') {
+                                echo "<div style='color: red' class='error'>Email already exists</div>";
+                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='invalid_email') {
+                                echo "<div style='color: red' class='error'>Invalid email</div>";
+                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='invalid_username') {
+                                echo "<div style='color: red' class='error'>Invalid username</div>";
+                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='incorrect_password') {
+                                echo "<div style='color: red' class='error'>Password should be at least 8 characters long, contain at least 1 capital, 1 lower case letter and 1 digit. Special characters aren't allowed</div>";
+                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='different_password') {
+                                echo "<div style='color: red' class='error'>Passwords are different</div>";
+                            } else if(isset($_REQUEST['email']) || isset($_REQUEST['user_name'])) {
+                                echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
+                            }
                             echo "<form method = 'post'>";
                                 echo "<table id='nonborder'";
                                         echo "<tr id='nonborder'>";
-                                            echo "<td>Email:</td><td> <input type = 'text' name = 'email'/> <br/></td>";
+                                            if(isset($_REQUEST['email'])) {
+                                                echo "<td>Email:</td><td> <input type = 'text' name = 'email' value='{$_REQUEST['email']}' /> <br/></td>";
+                                            } else {
+                                                echo "<td>Email:</td><td> <input type = 'text' name = 'email'/> <br/></td>";
+                                            }
                                         echo "</tr>";
                                         echo "<tr>";
-                                            echo "<td>Username:</td><td> <input type = 'text' name = 'user_name'/> <br/></td>";
+                                            if(isset($_REQUEST['user_name'])) {
+                                                echo "<td>Username:</td><td> <input type = 'text' name = 'user_name' value='{$_REQUEST['user_name']}'/> <br/></td>";
+                                            } else {
+                                                echo "<td>Username:</td><td> <input type = 'text' name = 'user_name'/> <br/></td>";
+                                            }
                                         echo "</tr>";
                                         echo "<tr>";
                                             echo "<td>Password:</td><td> <input type = 'password' name = 'password'/> <br/></td>";

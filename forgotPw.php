@@ -18,13 +18,13 @@
             }
             if($_SERVER['REQUEST_METHOD']=='POST') {
                 if(!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
-                    echo "Invalid email address, <a href='forgotPw.php'> retry</a>";
+                    header("Location: forgotPw.php?error=invalid&email={$_REQUEST['email']}");
                 } else {
                     $sql = "select count(*) from User where email=?";
                     $q = $con->prepare($sql);
                     $q->execute(array($_REQUEST['email']));
                     if($q->fetchColumn()==0) {
-                        echo "Email doesn't exist, <a href='forgotPw.php'> retry</a>";
+                    header("Location: forgotPw.php?error=not_existing&email={$_REQUEST['email']}");
                     } else {
                         $newPass = substr(base64_encode(rand(1000000000,9999999999)),0,10);
                         $sql = "update User set password=? where email=?";
@@ -34,7 +34,7 @@
                         $q = $con->prepare($sql);
                         $q->execute(array($_REQUEST['email']));
                         send_mail($newPass,$q->fetchColumn());
-                        echo "Your new password has been sent to your email address.";
+                        header("Location: login.php?newpass=1&email={$_REQUEST['email']}");
                     }
                 }
             } else {
@@ -44,9 +44,18 @@
                                 <h2>Retrieve password</h2>
                               </div>";
                         echo "<div class='accountContent'>";
+                            if(isset($_REQUEST['error']) && $_REQUEST['error']=='invalid') {
+                                echo "<div style='color: red' class='error'>Invalid email</div>";
+                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='not_existing') {
+                                echo "<div style='color: red' class='error'>Email doesn't exist</div>";
+                            }
                             echo "Fill in the email address to which the new password must be send";
                             echo "<form method = 'post'>";
-                                echo "Email: <input type = 'text' name = 'email'/> <br/>";
+                                if(isset($_REQUEST['email'])) {
+                                    echo "Email: <input type = 'text' name = 'email' value='{$_REQUEST['email']}'/> <br/>";
+                                } else {
+                                    echo "Email: <input type = 'text' name = 'email'/> <br/>";
+                                }
                                 echo "<input type = 'submit' name = 'submit' value = 'Send mail'> <br/>";
                             echo "</form>";
                         echo "</div>";
