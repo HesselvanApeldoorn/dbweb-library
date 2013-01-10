@@ -13,7 +13,7 @@
     </head>
     <body>
         <?php 
-            if($_SESSION['confirmed']==false && $_SESSION['regEmail']==$_GET['email'] && $_SESSION['confirm_code']==$_GET['confirm_code']) {
+            if($_SESSION['confirmed']==false && $_SESSION['regEmail']==$_REQUEST['email'] && $_SESSION['confirm_code']==$_REQUEST['confirm_code']) {
                 $_SESSION['confirmed'] = true;
                 header("Location: login.php?activate=success&email={$_REQUEST['email']}");
             } else {

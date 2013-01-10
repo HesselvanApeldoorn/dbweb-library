@@ -37,7 +37,7 @@ try {
                     <a href='search.php'><li> Search </li> </a>
                     <a href='personal.php'><li> Personal Page </li> </a>
                     <a href='notifications.php'><li> Notifications </li> </a>
-                    <a href=''><li> Settings </li> </a>
+                    <a href='settings.php'><li> Settings </li> </a>
                 </ul>
             </div>
 

@@ -21,6 +21,19 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
         $sql = "update PaperDoc set state=? where docID=?";
         $query = $con->prepare($sql);
         $query->execute(array($_REQUEST['state'], $_GET['book']));
+        
+        #Delete every category related to the current document
+        $sql = "delete from DocCategory where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($paperDoc['docID']));
+        
+        #insert new categories to the current document
+        $categories = $_REQUEST['category'];
+        foreach($categories as $category) {
+            $sql = "insert into DocCategory values(?,?)";
+            $query = $con->prepare($sql);
+            $query->execute(array($paperDoc['docID'], $category));
+        }
     } else {
         if ($_REQUEST['distributable']=='distributable') {
             $distributable=1;
@@ -49,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
         $sql = "insert into ElectronicDoc values(?,?,?,?,?)";
         $query = $con->prepare($sql);
         $query->execute(array($docID, $distributable,$electronicDoc['extension'], $electronicDoc['content'], $electronicDoc['size']));
-        $categories = $_POST['category'];
+        $categories = $_REQUEST['category'];
         foreach($categories as $category) {
             $sql = "insert into DocCategory values(?,?)";
             $query = $con->prepare($sql);
@@ -72,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
             $query->execute(array(str_replace('"','',$_GET['book'])));
         }
     }
-    header("location:personalLibrary.php");
+   header("location:personalLibrary.php");
 } else { //method is GET
     startblock('header');
         echo "<a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; Document";
