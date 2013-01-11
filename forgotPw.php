@@ -23,9 +23,9 @@
                     $sql = "select count(*) from User where email=?";
                     $q = $con->prepare($sql);
                     $q->execute(array($_REQUEST['email']));
-                    if($q->fetchColumn()==0) {
-                    header("Location: forgotPw.php?error=not_existing&email={$_REQUEST['email']}");
-                    } else {
+                    if($q->fetchColumn()==0) { #email doens't exist in the database
+                        header("Location: forgotPw.php?error=not_existing&email={$_REQUEST['email']}");
+                    } else {#new pass will be created and sent to the user
                         $newPass = substr(base64_encode(rand(1000000000,9999999999)),0,10);
                         $sql = "update User set password=? where email=?";
                         $q = $con->prepare($sql);
@@ -44,10 +44,12 @@
                                 <h2>Retrieve password</h2>
                               </div>";
                         echo "<div class='accountContent'>";
-                            if(isset($_REQUEST['error']) && $_REQUEST['error']=='invalid') {
-                                echo "<div style='color: red' class='error'>Invalid email</div>";
-                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='not_existing') {
-                                echo "<div style='color: red' class='error'>Email doesn't exist</div>";
+                            if(isset($_REQUEST['error'])) {
+                                if($_REQUEST['error']=='invalid') {
+                                    echo "<div style='color: red' class='error'>Invalid email</div>";
+                                } elseif($_REQUEST['error']=='not_existing') {
+                                    echo "<div style='color: red' class='error'>Email doesn't exist</div>";
+                                }
                             }
                             echo "Fill in the email address to which the new password must be send";
                             echo "<form method = 'post'>";
@@ -72,8 +74,7 @@ function send_mail($newPass, $user_name) {
     $url = str_replace(curPageName(),"",curPageUrl());
 
     $message .= "Now back to the library:\n". $url . "\n\n Kind regards,\n\n The libdev team";
-    mail($_REQUEST['email'], 'Registration Confirmation', $message, 'From:no-reply@libDev.com');
-
+    mail($_REQUEST['email'], 'New password', $message, 'From:no-reply@libDev.com');
 }
 
 function curPageURL() {

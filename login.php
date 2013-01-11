@@ -43,15 +43,17 @@
                             <h2>Log in</h2>
                         </div>
                         <div class='accountContent'>";
-                            if(isset($_REQUEST['activate']) && $_REQUEST['activate']=='success') {
-                                echo "<div style='color: red' class='error'>Your account has been activated succesfully</div>";   
-                            } else if(isset($_REQUEST['activate']) && $_REQUEST['activate']=='already_confirmed') {
-                                echo "<div style='color: red' class='error'>Your account is already activated</div>";   
-                            } else if(isset($_REQUEST['activate']) && $_REQUEST['activate']=='not_activated') {
-                                echo "<div style='color: red' class='error'>Your account has not been activated yet. You should've received an activation email</div>";   
-                            } else if(isset($_REQUEST['newpass']) && $_REQUEST['newpass']==1) {
+                            if(isset($_REQUEST['activate'])) {
+                                if($_REQUEST['activate']=='success') {
+                                    echo "<div style='color: red' class='error'>Your account has been activated succesfully</div>";   
+                                } elseif($_REQUEST['activate']=='already_confirmed') {
+                                    echo "<div style='color: red' class='error'>Your account is already activated</div>";   
+                                } elseif($_REQUEST['activate']=='not_activated') {
+                                    echo "<div style='color: red' class='error'>Your account has not been activated yet. You should've received an activation email</div>";   
+                                }
+                            } elseif(isset($_REQUEST['newpass']) && $_REQUEST['newpass']==1) {
                                 echo "<div style='color: red' class='error'>Your new password is sent to your email address</div>";
-                            } else if (isset($_REQUEST['email'])) {
+                            } elseif (isset($_REQUEST['email'])) {
                                 echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
                             }
                             echo "<form method='post'>";

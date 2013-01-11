@@ -36,9 +36,14 @@ endblock() ?>
                     echo "<p>Your start date is after the end date.</p>";
                     echo "<a href=''>Retry</a>";
                 } else {
+                    $sql = "select user_name from User where email = ?";
+                    $query = $con->prepare($sql);
+                    $query->execute(array($_SESSION['email']));
+                    $user_name =  $query->fetchColumn();
+                    
                     $sql = "insert into Notification (email, message, notify_date) values(?,?,?)";
                     $query = $con->prepare($sql);
-                    $query->execute(array("sample@hotmail.com","Cagri has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
+                    $query->execute(array("{$_SESSION['email']}","$user_name has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
                     header("location:personalLibrary.php");
                 }
             } else { # method is GET

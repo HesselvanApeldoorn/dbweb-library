@@ -19,17 +19,17 @@
             if($_SERVER['REQUEST_METHOD']=='POST') {
                  if(!isset($_REQUEST['user_name']) || $_REQUEST['user_name']=='') {
                     header("Location: register.php?error=invalid_username&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
-                } else if($_REQUEST['password']!=$_REQUEST['rePassword']) {
+                } elseif($_REQUEST['password']!=$_REQUEST['rePassword']) { #the password is not typed twice
                     header("Location: register.php?error=different_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                 } else {
                     $sql = "select count(*) from User where email=?";
                     $q = $con->prepare($sql);
                     $q->execute(array($_REQUEST['email']));
-                    if($q->fetchColumn()!=0) {
+                    if($q->fetchColumn()!=0) {#email already exists
                         header("Location: register.php?error=existing_email&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
-                    } else if (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) {
+                    } elseif (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) { #validate email
                         header("Location: register.php?error=invalid_email&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
-                    } else if (!passRequirements($_REQUEST['password'])) {
+                    } elseif (!passRequirements($_REQUEST['password'])) { #password requirements
                         header("Location: register.php?error=incorrect_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                     } else {
                         $sql = "INSERT INTO User (email,user_name,password) VALUES (?,?,?)";
@@ -50,17 +50,19 @@
                                 <h2>Registration</h2>
                               </div>";
                         echo "<div class='accountContent'>";
-                            if(isset($_REQUEST['error']) && $_REQUEST['error']=='existing_email') {
-                                echo "<div style='color: red' class='error'>Email already exists</div>";
-                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='invalid_email') {
-                                echo "<div style='color: red' class='error'>Invalid email</div>";
-                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='invalid_username') {
-                                echo "<div style='color: red' class='error'>Invalid username</div>";
-                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='incorrect_password') {
-                                echo "<div style='color: red' class='error'>Password should be at least 8 characters long, contain at least 1 capital, 1 lower case letter and 1 digit. Special characters aren't allowed</div>";
-                            } else if(isset($_REQUEST['error']) && $_REQUEST['error']=='different_password') {
-                                echo "<div style='color: red' class='error'>Passwords are different</div>";
-                            } else if(isset($_REQUEST['email']) || isset($_REQUEST['user_name'])) {
+                            if(isset($_REQUEST['error'])) {
+                                if($_REQUEST['error']=='existing_email') {
+                                    echo "<div style='color: red' class='error'>Email already exists</div>";
+                                } elseif($_REQUEST['error']=='invalid_email') {
+                                    echo "<div style='color: red' class='error'>Invalid email</div>";
+                                } elseif($_REQUEST['error']=='invalid_username') {
+                                    echo "<div style='color: red' class='error'>Invalid username</div>";
+                                } elseif($_REQUEST['error']=='incorrect_password') {
+                                    echo "<div style='color: red' class='error'>Password should be at least 8 characters long, contain at least 1 capital, 1 lower case letter and 1 digit. Special characters aren't allowed</div>";
+                                } elseif($_REQUEST['error']=='different_password') {
+                                    echo "<div style='color: red' class='error'>Passwords are different</div>";
+                                }
+                            } elseif(isset($_REQUEST['email']) || isset($_REQUEST['user_name'])) {
                                 echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
                             }
                             echo "<form method = 'post'>";
