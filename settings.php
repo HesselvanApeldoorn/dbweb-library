@@ -59,7 +59,7 @@ if($_SERVER['REQUEST_METHOD']=='POST') { # a submit button has been clicked
                 echo "<form method='post'>";
                     $query = $con->prepare("select category from PreferredCategory where email=?");
                     $query->execute(array($_SESSION['email']));
-                    $categories = array("action","fantasy","fiction","romance", "comedy","adventure", "non-fiction", "education");
+                    $categories = array("action","fantasy","fiction","romance", "comedy","adventure", "non-fiction", "education", "religious","detective"););
                     echo "<table border='0'>";
                         echo "<tr>";
                             $q= $query->fetchAll();

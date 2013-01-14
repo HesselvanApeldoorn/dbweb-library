@@ -69,9 +69,8 @@ INSERT INTO DocCategory VALUES(7, 'education');
 INSERT INTO DocCategory VALUES(8, 'fantasy');
 INSERT INTO DocCategory VALUES(9, 'religious');
 INSERT INTO DocCategory VALUES(10, 'fantasy');
-INSERT INTO DocCategory VALUES(11, 'mystery');
 INSERT INTO DocCategory VALUES(11, 'detective');
-INSERT INTO DocCategory VALUES(12, 'crime');
+INSERT INTO DocCategory VALUES(12, 'action');
 
 
 INSERT INTO Loaning VALUES(1, 2, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');

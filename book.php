@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                             $query = $con->prepare($sql);
                             $query->execute(array($_GET['book']));
                             echo "<h4>Categories<hr/></h4>";
-                            $categories = array("action","fantasy","fiction","romance", "comedy","adventure", "non-fiction", "education");
+                            $categories = array("action","fantasy","fiction","romance", "comedy","adventure", "non-fiction", "education", "religious","detective");
                             echo "<table border='0'>";
                                 echo "<tr>";
                                     $q= $query->fetchAll();
@@ -203,6 +203,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                                         echo "<option $options[2] value='decent'>decent</option>";
                                         echo "<option $options[3] value='poor'>poor</option>";
                                     echo "</select>";
+                                } else {
+                                    echo $paperDoc['state'];
                                 }
                             } else { #electronic doc
                                 $sql = "select * from ElectronicDoc where docID =?";
