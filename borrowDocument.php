@@ -44,7 +44,7 @@ endblock() ?>
                     $sql = "insert into Notification (email, message, notify_date) values(?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array("{$_SESSION['email']}","$user_name has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
-                    header("location:personalLibrary.php");
+                    header("location:loanings.php");
                 }
             } else { # method is GET
                 $sql = "select * from PaperDoc";
@@ -54,11 +54,15 @@ endblock() ?>
                     echo "<form method='post'>";
                         echo "Document: <select name='selectedDoc'>";
                         foreach($query as $book) {
-                                $sql = "select * from Document where docID=?";
-                                $query2 = $con->prepare($sql);
-                                $query2->execute(array(str_replace('"','',$book['docID'])));
-                                $document = $query2->fetch();
+                            $sql = "select * from Document where docID=?";
+                            $query2 = $con->prepare($sql);
+                            $query2->execute(array(str_replace('"','',$book['docID'])));
+                            $document = $query2->fetch();
+                            if ($_REQUEST['docID']==$book['docID']) {
+                                echo "<option name='selectedDoc' selected='selected' value='{$document['document_name']}' >{$document['document_name']}</option>";
+                            } else {
                                 echo "<option name='selectedDoc' value='{$document['document_name']}' >{$document['document_name']}</option>";
+                            }
                         }
                         echo "</select>";
                         echo "<hr/>";

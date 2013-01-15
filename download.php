@@ -34,7 +34,6 @@ if($query->rowCount()==0 or !$fileInfo['distributable']) {
 	die();
 	exit;
 } else {
-
 	header("Content-length: {$fileInfo['size']}");
 	header("Content-type: {$fileInfo['extension']}");
 	header("Content-Disposition: attachment; filename={$fileName['document_name']}");
@@ -42,4 +41,3 @@ if($query->rowCount()==0 or !$fileInfo['distributable']) {
 	exit;
 }
 ?>
-

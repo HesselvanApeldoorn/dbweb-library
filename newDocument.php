@@ -1,7 +1,20 @@
-<?php require 'templates/base.php' ?>
-<link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php
 if ($_SERVER['REQUEST_METHOD']=='POST') {
+    require '../../libConfig.php';
+    session_start();
+    if  (!isset($_SESSION["email"])) {
+        header("location:login.php");
+    }
+    try {
+        $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
+    } catch(PDOException $e) {
+            echo "Could not connect to database.";
+            die();
+    }
+
+
+
+
     if ($_REQUEST['visible']=='visible') {
         $visible=1;
     } else {
@@ -34,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         } else {
             $distributable=0;
         }
-                # handle file
+
+        # handle file
         if($_FILES['content']['size'] > 0) {
             $fileName = $_FILES['content']['name'];
             $tmpName  = $_FILES['content']['tmp_name'];
@@ -44,11 +58,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             $fp      = fopen($tmpName, 'r');
             $content = fread($fp, filesize($tmpName));
             $content = addslashes($content);
-            fclose($fp);
             if(!get_magic_quotes_gpc())
             {
-                $fileName = addslashes($fileName);
+                 $fileName = addslashes($fileName);
             }
+            fclose($fp);
+            header("Content-Disposition: attachment; filename=$fileName"); 
+            header("Content-length: $fileSize"); 
+            header("Content-type: $fileType"); 
+            echo $content; 
+
         } else {
             echo "Something went wrong with your uploaded file. <a href='#'>Retry?</a>";
         }
@@ -72,8 +91,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             $query->execute(array($docID, $category));
         }
     }
-    header("location:personalLibrary.php");
+    //header("location:personalLibrary.php");
 } else { //method is GET
+    echo '<link href="static/css/base.css" rel="stylesheet" type="text/css">';
+    require 'templates/base.php';
     startblock('scripts');
         echo "<script> function enable(n) {
           if (n==1) {

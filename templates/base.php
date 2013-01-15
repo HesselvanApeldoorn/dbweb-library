@@ -1,5 +1,8 @@
 <?php require 'ti.php' ?>
-<?php require '../../libConfig.php' ?>
+<?php require '../../libConfig.php' ;
+              error_reporting(-1);
+            ini_set("display_errors", 1);
+?>
 <?php
 session_start();
 if  (!isset($_SESSION["email"])) {

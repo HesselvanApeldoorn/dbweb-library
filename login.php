@@ -55,6 +55,8 @@
                                 echo "<div style='color: red' class='error'>Your new password is sent to your email address</div>";
                             } elseif (isset($_REQUEST['email'])) {
                                 echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
+                            } elseif (isset($_REQUEST['deleted']) && $_REQUEST['deleted']=='succes') {
+                                echo "<div style='color: red' class='error'>Your account has been deleted succesfully</div>";
                             }
                             echo "<form method='post'>";
                                 echo "<table id='nonborder'";

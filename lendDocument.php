@@ -39,7 +39,7 @@ endblock() ?>
                     $sql = "insert into Loaning (docID, start_date, end_date, fromUser, toUser) values(?,?,?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array($_REQUEST['docID'], $_REQUEST['start'], $_REQUEST['end'], $_SESSION['email'], $_REQUEST['toUser']));
-                    header("location:personalLibrary.php");
+                    header("location:loanings.php");
                 }
             } else { # method is GET
                 $sql = "select PaperDoc.docID from PaperDoc left outer join Loaning on PaperDoc.docID=Loaning.docID where email=? and Loaning.docID is null";
