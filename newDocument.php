@@ -20,6 +20,14 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $sql = "insert into PaperDoc (docID, state, email) values (?, ?,?)";
         $query = $con->prepare($sql);
         $query->execute(array($docID, $_REQUEST['state'], $_SESSION['email']));
+
+        #insert categories to the new document
+        $categories = $_REQUEST['category'];
+        foreach($categories as $category) {
+            $sql = "insert into DocCategory values(?,?)";
+            $query = $con->prepare($sql);
+            $query->execute(array($docID, $category));
+        }
     } else { # electronic Document
         if ($_REQUEST['distributable']=='distributable') {
             $distributable=1;
