@@ -1,5 +1,4 @@
-<?php require 'templates/base.php';            error_reporting(-1);
-            ini_set("display_errors", 1); ?>
+<?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('header');
         echo "<a href='index.php'>Home</a> &raquo; Search";
@@ -18,8 +17,8 @@ endblock() ?>
                     } else {
                         $selected = $_REQUEST['searchCriteria'];
                     }
-                    $options = array("","","","", "","");
-                    $values = array("all","document_name", "author", "isbn", "description", "category");
+                    $options = array("","","","", "","","");
+                    $values = array("all","document_name", "author", "isbn", "description", "category","prefCategory");
                     for($i=0;$i<sizeof($options);$i++) {
                         if($selected==$values[$i]) {
                             $options[$i] =  "selected='selected'";
@@ -32,6 +31,7 @@ endblock() ?>
                             <option value='isbn' $options[3]>ISBN</option>
                             <option value='description' $options[4]>Description</option>
                             <option value='category' $options[5]>Category</option>
+                            <option value='prefCategory' $options[6]>Preferred Category</option>
                         </select>";
                     echo "<input type='submit' name='searchButton' value='Find'>";
                 echo "</form>";
@@ -43,18 +43,25 @@ endblock() ?>
                 } else {
                     $selected = $_REQUEST['searchCriteria'];
                 }
-                if($selected!='all' && $selected!='category' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) { //the user searches on (name||author||isbn||description)
+                if($selected!='all' && $selected!='category' && $selected!='perfCategory' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) { //the user searches on (name||author||isbn||description)
                     $crit = $match[1];
                     $sql =  "select *, GROUP_CONCAT(category separator ', ') as categoryConcat from Document inner join DocCategory on Document.docID=DocCategory.docID where $crit like ? AND visible = 1 group by Document.docID";
-                } else if($selected=='all') { // the user searches on everything
+                } elseif($selected=='all') { // the user searches on everything
                     $sql =  "select * from Document inner join (select docID, GROUP_CONCAT(category separator ', ') as categoryConcat from DocCategory group by docID) as CAT on Document.docID=CAT.docID  where concat(categoryConcat, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1;";
-                } else if($selected=='category') {// the user searches on category
+                } elseif($selected=='category') {// the user searches on category
                     $sql = "select * from Document inner join (select docID, GROUP_CONCAT(category separator ', ')  as categoryConcat from DocCategory group by docID) as CAT on Document.docID=CAT.docID where CAT.categoryConcat like ? AND visible=1";
+                } elseif($selected=='prefCategory') {
+                    $sql = "select * from Document inner join (select docID,GROUP_CONCAT(catConcat separator ', ') as categoryConcat from (select docID, pcat,GROUP_CONCAT(dcat separator ', ') as catConcat from (select docID, PreferredCategory.category as pcat, DocCategory.category as dcat from PreferredCategory inner join DocCategory on PreferredCategory.category=DocCategory.category where PreferredCategory.email=?) as CombCat group by docID,pcat ) as test group by docID) as allDoc on allDoc.docID=Document.docID where concat(categoryConcat, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1";
                 } else {
                     echo "Hacking attempt";
                 }
                 $q = $con->prepare($sql); // Group concat is used so multiple categories are shown in the same row.
-                $q->execute(array("%{$_REQUEST['searchText']}%"));
+                if($selected!='prefCategory') {
+                    $q->execute(array("%{$_REQUEST['searchText']}%"));
+                } else {
+                    $q->execute(array($_SESSION['email'],"%{$_REQUEST['searchText']}%"));
+                }
+
                 /* Show search results */
                 if($q->rowCount()>0) {
                     echo $q->rowCount() . " search results.<br/>";

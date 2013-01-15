@@ -91,12 +91,12 @@ body {
 }
 
 .search_bar input[type="text"] {
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    border-radius: 15px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     border:solid 1px black;
     padding:5px;
-    width:100%;
+    width:75%;
 }
 
 /*********** Table styling ***********/
