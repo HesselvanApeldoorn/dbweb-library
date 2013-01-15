@@ -1,6 +1,4 @@
-<?php require 'templates/base.php';
-                        error_reporting(-1);
-            ini_set("display_errors", 1); ?>
+<?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
 <?php startblock('scripts') ?>
     <meta charset="utf-8" />
@@ -42,7 +40,7 @@ endblock() ?>
                     header("location:loanings.php");
                 }
             } else { # method is GET
-                $sql = "select PaperDoc.docID from PaperDoc left outer join Loaning on PaperDoc.docID=Loaning.docID where email=? and Loaning.docID is null";
+                $sql = "select PaperDoc.docID from PaperDoc left join Loaning on PaperDoc.docID=Loaning.docID where email=? and (end_date is null or (start_date >= CURRENT_TIMESTAMP and end_date <= CURRENT_TIMESTAMP))";
                 $query = $con->prepare($sql);
                 $query->execute(array($_SESSION['email']));
                 if($query->rowCount()>0) {
