@@ -39,7 +39,7 @@ endblock() ?>
                     $sql = "insert into Loaning (docID, start_date, end_date, fromUser, toUser) values(?,?,?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array($_REQUEST['docID'], $_REQUEST['start'], $_REQUEST['end'], "sample@hotmail.com", "sample2@hotmail.com"));
-                    header("location:personalLibrary.php");
+                    header("location:loanings.php");
                 }
             } else { # method is GET
                 $sql = "select * from PaperDoc";
