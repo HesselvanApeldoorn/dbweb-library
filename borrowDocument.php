@@ -40,10 +40,20 @@ endblock() ?>
                     $query = $con->prepare($sql);
                     $query->execute(array($_SESSION['email']));
                     $user_name =  $query->fetchColumn();
+
+                    $sql = "select * from Document where docID = ?";
+                    $query = $con->prepare($sql);
+                    $query->execute(array($_REQUEST['selectedDoc']));
+                    $selectedDoc =  $query->fetch();
+
+                    $sql = "select * from PaperDoc where docID = ?";
+                    $query = $con->prepare($sql);
+                    $query->execute(array($_REQUEST['selectedDoc']));
+                    $selectedPaper =  $query->fetch();
                     
                     $sql = "insert into Notification (email, message, notify_date) values(?,?,?)";
                     $query = $con->prepare($sql);
-                    $query->execute(array("{$_SESSION['email']}","$user_name has requested a loaning. Document: {$_REQUEST['selectedDoc']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
+                    $query->execute(array($selectedPaper['email'],"$user_name has requested a loaning. Document: {$selectedDoc['document_name']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
                     header("location:loanings.php");
                 }
             } else { # method is GET
@@ -59,9 +69,9 @@ endblock() ?>
                             $query2->execute(array(str_replace('"','',$book['docID'])));
                             $document = $query2->fetch();
                             if ($_REQUEST['docID']==$book['docID']) {
-                                echo "<option name='selectedDoc' selected='selected' value='{$document['document_name']}' >{$document['document_name']}</option>";
+                                echo "<option name='selectedDoc' selected='selected' value='{$book['docID']}' >{$document['document_name']}</option>";
                             } else {
-                                echo "<option name='selectedDoc' value='{$document['document_name']}' >{$document['document_name']}</option>";
+                                echo "<option name='selectedDoc' value='{$book['docID']}' >{$document['document_name']}</option>";
                             }
                         }
                         echo "</select>";

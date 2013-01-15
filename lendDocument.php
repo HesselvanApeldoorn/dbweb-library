@@ -49,11 +49,11 @@ endblock() ?>
                     echo "<form method='post'>";
                         echo "Document: <select name='docID'>";
                         foreach($query as $book) {
-                                $sql = "select * from Document where docID=?";
-                                $query2 = $con->prepare($sql);
-                                $query2->execute(array(str_replace('"','',$book['docID'])));
-                                $document = $query2->fetch();
-                                echo "<option name='docID' value='{$document['docID']}' >{$document['document_name']}</option>";
+                            $sql = "select * from Document where docID=?";
+                            $query2 = $con->prepare($sql);
+                            $query2->execute(array(str_replace('"','',$book['docID'])));
+                            $document = $query2->fetch();
+                            echo "<option name='docID' value='{$document['docID']}' >{$document['document_name']}</option>";
                         }
                         echo "</select>";
                         echo "<hr/>";
