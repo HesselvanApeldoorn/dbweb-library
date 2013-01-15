@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                                         and end_date >= CURRENT_TIMESTAMP";
                                     $query = $con->prepare($sql);
                                     $query->execute(array($_GET['book']));
-                                    if ($query->rowCount()==1) {
+                                    if ($query->rowCount()>=1) {
                                         echo "This book has been lent out.";
                                     } else {
                                         echo "<a href='borrowDocument.php?docID={$_GET['book']}'>borrow Book </a>";                                    
