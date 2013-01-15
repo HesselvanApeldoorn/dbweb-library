@@ -28,7 +28,11 @@ endblock() ?>
                         }
                         echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
                         echo "<td>{$document['author']}</td>";
-                        echo "<td>{$document['description']}</td>";
+                        $desc = "<td>".substr($document['description'],0,20);
+                        if(strlen($document['description'])>20) {
+                            $desc = $desc . "...";
+                        }
+                        echo $desc ."</td>";
                         echo "<td>{$document['isbn']}</td>";
                         echo "</tr>";
                     }
