@@ -38,13 +38,13 @@ endblock() ?>
                 } else {
                     $sql = "insert into Loaning (docID, start_date, end_date, fromUser, toUser) values(?,?,?,?,?)";
                     $query = $con->prepare($sql);
-                    $query->execute(array($_REQUEST['docID'], $_REQUEST['start'], $_REQUEST['end'], "sample@hotmail.com", "sample2@hotmail.com"));
+                    $query->execute(array($_REQUEST['docID'], $_REQUEST['start'], $_REQUEST['end'], $_SESSION['email'], $_REQUEST['toUser']));
                     header("location:personalLibrary.php");
                 }
             } else { # method is GET
-                $sql = "select * from PaperDoc";
+                $sql = "select PaperDoc.docID from PaperDoc left outer join Loaning on PaperDoc.docID=Loaning.docID where email=? and Loaning.docID is null";
                 $query = $con->prepare($sql);
-                $query->execute();
+                $query->execute(array($_SESSION['email']));
                 if($query->rowCount()>0) {
                     echo "<form method='post'>";
                         echo "Document: <select name='docID'>";
@@ -59,6 +59,17 @@ endblock() ?>
                         echo "<hr/>";
                         echo "<div style='float:left'>Start date: <input type='date' name='start' id='datepicker' value='".date("m/d/Y")."'/>";
                         echo "&nbsp; &nbsp; &nbsp; &nbsp;End date: <input type='date' name='end' id='datepicker2' value='".date("m/d/Y",strtotime("+7 day"))."'/></div>";
+                        
+                        #dropdownbox for lending to user:
+                        echo "<select name='toUser'>";
+                            $sql = "select email from User where email!=?";
+                            $query2 = $con->prepare($sql);
+                            $query2->execute(array($_SESSION['email']));
+                            foreach($query2 as $email) {
+                                echo "<option value='{$email['email']}'>{$email['email']}</option>";
+                            }
+                        echo "</select>";
+
                         echo "<br/><br/><input type='submit' name='lend' value='Lend'/>";
                     echo "</form";
                 } else { //No docs to be lend
