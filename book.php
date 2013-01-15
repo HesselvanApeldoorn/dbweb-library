@@ -206,14 +206,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                                 } else {
                                     echo $paperDoc['state'];
                                 }
-                                if (!$ownBook) {
-                                    echo "<h4>Loaning<hr/></h4>";
-                                    $sql = "select * from Loaning where docID=? and start_date <= CURRENT_TIMESTAMP
-                                        and end_date >= CURRENT_TIMESTAMP";
-                                    $query = $con->prepare($sql);
-                                    $query->execute(array($_GET['book']));
-                                    if ($query->rowCount()>=1) {
-                                        echo "This book has been lent out.";
+                                echo "<h4>Loaning<hr/></h4>";
+                                $sql = "select * from Loaning where docID=? and start_date <= CURRENT_TIMESTAMP
+                                    and end_date >= CURRENT_TIMESTAMP";
+                                $query = $con->prepare($sql);
+                                $query->execute(array($_GET['book']));
+                                if ($query->rowCount()>=1) {
+                                    echo "This book has been lent out.";
+                                } else {
+                                    if($ownBook) {
+                                        echo "<a href='lentDocument.php?docID={$_GET['book']}'>lent Book to someone</a>";                                    
                                     } else {
                                         echo "<a href='borrowDocument.php?docID={$_GET['book']}'>borrow Book </a>";                                    
                                     }

@@ -57,9 +57,9 @@ endblock() ?>
                     header("location:loanings.php");
                 }
             } else { # method is GET
-                $sql = "select * from PaperDoc";
+                $sql = "select * from PaperDoc left join Document on PaperDoc.docID=Document.docID where PaperDoc.docID not in (select docID from Loaning where start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP) and visible=1 and email!=?";
                 $query = $con->prepare($sql);
-                $query->execute();
+                $query->execute(array($_SESSION['email']));
                 if($query->rowCount()>0) {
                     echo "<form method='post'>";
                         echo "Document: <select name='selectedDoc'>";
