@@ -96,9 +96,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
         $query = $con->prepare($sql);
         $query->execute(array($_GET['book']));
         echo "<div class='main'>";
-            $query = $con->prepare($sql);
-            $query->execute(array($_GET['book']));
-            $book = $query->fetch();
+            $query2 = $con->prepare($sql);
+            $query2->execute(array($_GET['book']));
+            $book = $query2->fetch();
             echo "<div class='blockHeader'> <h2>Document: {$book['document_name']}</h2></div>";
             echo "<div class='blockContent'>";
                 if ($query->rowCount()==0) {

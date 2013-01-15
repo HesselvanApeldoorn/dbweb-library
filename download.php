@@ -13,13 +13,12 @@ try {
 ?>
 
 <?php
-
+$id    = $_GET['id'];
 $sql = "SELECT * FROM ElectronicDocCopies WHERE docID = ? and email = ?";
 $query = $con->prepare($sql);
 $query->execute(array($id, $_SESSION["email"]));
 $ownDoc = $query->fetch();
 
-$id    = $_GET['id'];
 $sql = "SELECT content, extension, size, distributable FROM ElectronicDoc WHERE docID = ?";
 $query = $con->prepare($sql);
 $query->execute(array($id));
@@ -29,7 +28,7 @@ $sql = "SELECT * FROM Document WHERE docID = ?";
 $query = $con->prepare($sql);
 $query->execute(array($id));
 $fileName = $query->fetch();
-if($query->rowCount()==0 or !$fileInfo['distributable']) {
+if(($query->rowCount()==0) or (!$fileInfo['distributable'] and !$ownDoc)) {
 	echo "You are not allowed to download this document!";
 	die();
 	exit;
