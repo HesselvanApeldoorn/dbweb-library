@@ -63,10 +63,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                  $fileName = addslashes($fileName);
             }
             fclose($fp);
-            header("Content-Disposition: attachment; filename=$fileName"); 
-            header("Content-length: $fileSize"); 
-            header("Content-type: $fileType"); 
-            echo $content; 
+            // header("Content-Disposition: attachment; filename=$fileName"); 
+            // header("Content-length: $fileSize"); 
+            // header("Content-type: $fileType"); 
+            // echo $content; 
 
         } else {
             echo "Something went wrong with your uploaded file. <a href='#'>Retry?</a>";
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             $query->execute(array($docID, $category));
         }
     }
-    //header("location:personalLibrary.php");
+    header("location:personalLibrary.php");
 } else { //method is GET
     echo '<link href="static/css/base.css" rel="stylesheet" type="text/css">';
     require 'templates/base.php';
