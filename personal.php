@@ -19,13 +19,11 @@ endblock() ?>
                     echo "<th> Author</th>";
                     echo "<th> Description </th>";
                     echo "<th> ISBN(optional)</th>";
-                    if($query->rowCount()>10) {
-                        echo "<tfoot align='right'>
-                                <tr >
-                                    <td colspan='4'> <a href='personalLibrary.php'>See more...</a></td>
-                                </tr>
-                            </tfoot>";
-                    }
+                    echo "<tfoot align='right'>
+                            <tr >
+                                <td colspan='4'> <a href='personalLibrary.php'>See more...</a></td>
+                            </tr>
+                        </tfoot>";
                     $i=0;
                     foreach($query as $document) {
                         $i = $i+1;
@@ -57,13 +55,11 @@ endblock() ?>
                     echo "<th>Lent to</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    if($query->rowCount()>5) {
-                        echo "<tfoot align='right'>
-                                <tr>
-                                    <td colspan='4'> <a href='loanings.php'>See more...</a></td>
-                                </tr>
-                            </tfoot>";
-                    }
+                    echo "<tfoot align='right'>
+                            <tr>
+                                <td colspan='4'> <a href='loanings.php'>See more...</a></td>
+                            </tr>
+                        </tfoot>";
 
                     $i=0;
                     foreach($query as $loaning) {
@@ -95,13 +91,11 @@ endblock() ?>
                     echo "<th>Borrowed from</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    if($query->rowCount()>5) {
-                        echo "<tfoot align='right'>
-                                <tr >
-                                    <td colspan='4'> <a href='loanings.php'>See more...</a></td>
-                                </tr>
-                            </tfoot>";
-                    }
+                    echo "<tfoot align='right'>
+                            <tr >
+                                <td colspan='4'> <a href='loanings.php'>See more...</a></td>
+                            </tr>
+                        </tfoot>";
 
                     $i=0;
                     foreach($query as $loaning) {

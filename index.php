@@ -17,19 +17,17 @@ endblock() ?>
             $query = $con->prepare("select Document.* from Document
                 join PaperDoc on (Document.docID=PaperDoc.docID) where PaperDoc.email='{$_SESSION['email']}' union
                 select Document.* from Document
-                join ElectronicDocCopies on (Document.docID=ElectronicDocCopies.docID) where ElectronicDocCopies.email='{$_SESSION['email']}'");
+                join ElectronicDocCopies on (Document.docID=ElectronicDocCopies.docID) where ElectronicDocCopies.email='{$_SESSION['email']}' LIMIT 10");
             $query->execute();
             if($query->rowCount()>0) {
                 echo "<table>";
                     echo "<th> Name</th>";
                     echo "<th> Author</th>";
-                    if($query->rowCount()>10) {
-                        echo "<tfoot align='right'>
-                                <tr >
-                                    <td colspan='4'> <a href='personalLibrary.php'>See more...</a></td>
-                                </tr>
-                            </tfoot>";
-                    }
+                    echo "<tfoot align='right'>
+                            <tr >
+                                <td colspan='4'> <a href='personalLibrary.php'>See more...</a></td>
+                            </tr>
+                        </tfoot>";
                     $i=0;
                     foreach($query as $document) {
                         $i = $i+1;
@@ -55,13 +53,11 @@ endblock() ?>
                     echo "<th>Lent to</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    if($query->rowCount()>5) {
-                        echo "<tfoot align='right'>
-                                <tr >
-                                    <td colspan='4'> <a href='loanings.php'>See more...</a></td>
-                                </tr>
-                            </tfoot>";
-                    }
+                    echo "<tfoot align='right'>
+                            <tr >
+                                <td colspan='4'> <a href='loanings.php'>See more...</a></td>
+                            </tr>
+                        </tfoot>";
 
                     $i=0;
                     foreach($query as $loaning) {
@@ -92,13 +88,11 @@ endblock() ?>
                     echo "<th>Borrowed from</th>";
                     echo "<th>Start date</th>";
                     echo "<th>end date</th>";
-                    if($query->rowCount()>5) {
-                        echo "<tfoot align='right'>
-                                <tr >
-                                    <td colspan='4'> <a href='loanings.php'>See more...</a></td>
-                                </tr>
-                            </tfoot>";
-                    }
+                    echo "<tfoot align='right'>
+                            <tr >
+                                <td colspan='4'> <a href='loanings.php'>See more...</a></td>
+                            </tr>
+                        </tfoot>";
 
                     $i=0;
                     foreach($query as $loaning) {
@@ -134,9 +128,7 @@ endblock() ?>
                         echo $notification['message'];
                     echo "</div>";
                 }
-                if($query->rowCount()>5) {
-                    echo "<a style='float:right' href='notifications.php'>See more...</a>";
-                }
+                echo "<a style='float:right' href='notifications.php'>See more...</a>";
             } else { //no notifications
                 echo "There are no notifications currently.";
             }
