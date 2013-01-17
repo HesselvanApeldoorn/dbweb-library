@@ -135,10 +135,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                     echo "<h4>Visibility<hr/></h4>";
                     echo "<input type = 'radio' checked name = 'visible' value='visible' >visible<br/>";
                     echo "<input type = 'radio' name = 'visible' value='notvisible' >not visible";
-                    echo "<h4>type of document<hr/></h4>";
-                    echo "<input type = 'radio' name = 'docType' onclick='enable(1);' value='paper' />paper<br/>";
+                    echo "<h4>Type of document<hr/></h4>";
+                    echo "<input type = 'radio' checked name = 'docType' onclick='enable(1);' value='paper' />paper<br/>";
                     echo "<input type = 'radio' name = 'docType' onclick='enable(2);' value='electronic' />electronic<br/>";
-                    echo "<div id='paper' style='display: none'>";
+                    echo "<div id='paper' style='display: block'>";
                         echo "<h4>Name<hr/></h4>";
                         echo "<input type='text' name='document_name' value=''/>";
                         echo "<h4>Quality<hr/></h4>";
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                     echo "</div>";
                     echo "<div id='electronic' style='display: none'>";
                         echo "<h4>Distributable<hr/></h4>";
-                        echo "<input type = 'radio' name = 'distributable' value='distributable' />distributable<br/>";
+                        echo "<input type = 'radio' checked name = 'distributable' value='distributable' />distributable<br/>";
                         echo "<input type = 'radio' name = 'distributable' value='notdistributable' />not distributable";
                         echo "<h4>Content<hr/></h4>";
                         echo "<input type='hidden' name='MAX_FILE_SIZE' value='20000000'>";

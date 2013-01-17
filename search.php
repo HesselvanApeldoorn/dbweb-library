@@ -1,5 +1,19 @@
 <?php require 'templates/base.php' ?>
 <link href="static/css/base.css" rel="stylesheet" type="text/css">
+
+<?php startblock('scripts');
+    echo "<script language='Javascript' type='text/javascript'>
+        function optionchanged(ele) {
+            var val = ele.options[ele.options.selectedIndex].value;
+            if (val == 'prefCategory') {
+                document.getElementById('userPref').style.display = 'inline';
+            } else {
+                document.getElementById('userPref').style.display = 'none';
+            }
+        }
+    </script>";
+endblock();
+?>
 <?php startblock('header');
         echo "<a href='index.php'>Home</a> &raquo; Search";
 endblock() ?>
@@ -24,15 +38,30 @@ endblock() ?>
                             $options[$i] =  "selected='selected'";
                         }
                     }
-                    echo "<select name='searchCriteria'>
-                            <option value='all' $options[0]>All</selected>
+                    echo "<select name='searchCriteria' onchange='optionchanged(this);'>
+                            <option value='all' $options[0]>All</option>
                             <option value='document_name' $options[1]>Name</option>
                             <option value='author' $options[2]>Author</option>
                             <option value='isbn' $options[3]>ISBN</option>
                             <option value='description' $options[4]>Description</option>
                             <option value='category' $options[5]>Category</option>
-                            <option value='prefCategory' $options[6]>Preferred Category</option>
+                            <option value='prefCategory' $options[6] onclick='enable(1);'>Preferred Category...</option>
                         </select>";
+                    if($selected!='prefCategory') {
+                        echo "<div id='userPref' style='display: none'>";
+                    } else {
+                        echo "<div id='userPref' style='display: inline'>";
+                    }
+                        $sql = "select distinct email from PreferredCategory where email!=?";
+                        $q = $con->prepare($sql); 
+                        $q->execute(array($_SESSION['email']));
+                        echo "<select name='searchPrefCriteria'>
+                                <option value='{$_SESSION['email']}'>Your preferences</option>";
+                        foreach($q as $user) {
+                            echo "<option value='{$user['email']}'>{$user['email']}</option>";
+                        }
+                        echo "</select>";
+                    echo "</div>";
                     echo "<input type='submit' name='searchButton' value='Find'>";
                 echo "</form>";
             echo "</div>";
@@ -42,6 +71,11 @@ endblock() ?>
                     $selected = 'all';
                 } else {
                     $selected = $_REQUEST['searchCriteria'];
+                }
+                if($_REQUEST['searchText']=='Search for books') {
+                    $searchText = '';
+                } else {
+                    $searchText = $_REQUEST['searchText'];
                 }
                 if($selected!='all' && $selected!='category' && $selected!='perfCategory' && preg_match("/^(document_name|author|isbn|description)$/", $selected, $match)) { //the user searches on (name||author||isbn||description)
                     $crit = $match[1];
@@ -54,12 +88,15 @@ endblock() ?>
                     $sql = "select * from Document inner join (select docID,GROUP_CONCAT(catConcat separator ', ') as categoryConcat from (select docID, pcat,GROUP_CONCAT(dcat separator ', ') as catConcat from (select docID, PreferredCategory.category as pcat, DocCategory.category as dcat from PreferredCategory inner join DocCategory on PreferredCategory.category=DocCategory.category where PreferredCategory.email=?) as CombCat group by docID,pcat ) as test group by docID) as allDoc on allDoc.docID=Document.docID where concat(categoryConcat, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1";
                 } else {
                     echo "Hacking attempt";
+                    endblock();
+
+                    return 0;
                 }
                 $q = $con->prepare($sql); // Group concat is used so multiple categories are shown in the same row.
                 if($selected!='prefCategory') {
-                    $q->execute(array("%{$_REQUEST['searchText']}%"));
+                    $q->execute(array("%$searchText%"));
                 } else {
-                    $q->execute(array($_SESSION['email'],"%{$_REQUEST['searchText']}%"));
+                    $q->execute(array($_REQUEST['searchPrefCriteria'],"%$searchText%"));
                 }
 
                 /* Show search results */
@@ -92,7 +129,7 @@ endblock() ?>
                         }
                     echo "</table>";
                 } else {
-                    echo "There are no matches in the database for: {$_REQUEST['searchText']}.";
+                    echo "There are no matches in the database for: $searchText.";
                 }
             }
         echo "</div>";
