@@ -3,6 +3,48 @@
 <?php
 if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
     header("location:personalLibrary.php");
+} elseif ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['delete'])) {
+    $sql = "select * from PaperDoc where docID =?";
+    $query = $con->prepare($sql);
+    $query->execute(array($_GET['book']));
+    $paperDoc = $query->fetch();
+    if (isset($paperDoc['docID'])) {
+        $sql = "delete from DocCategory where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($paperDoc['docID']));
+
+        $sql ="delete from Loaning where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($paperDoc['docID']));
+
+        $sql ="delete from PaperDoc where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($paperDoc['docID']));
+
+        $sql ="delete from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array($paperDoc['docID']));
+    } else { # Electronic document
+        $sql = "delete from ElectronicDocCopies where docID=? and email=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_REQUEST['book']), $_SESSION['email']));
+
+        $sql = "select count(*) from ElectronicDocCopies where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+        if ($query->fetchColumn()==0) { # single user
+            $sql = "delete from ElectronicDoc where docID=?";
+            $query = $con->prepare($sql);
+            $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+            $sql = "delete from DocCategory where docID=?";
+            $query = $con->prepare($sql);
+            $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+            $sql = "delete from Document where docID=?";
+            $query = $con->prepare($sql);
+            $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+        }
+    }
+    header("location:personalLibrary.php");
 } elseif ($_SERVER['REQUEST_METHOD']=='POST') {
     if ($_REQUEST['visible']=='visible') {
         $visible=1;
@@ -70,10 +112,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
         }
 
         # Delete old document if this was the single user that possessed it.
-        $sql = "select count(*) from Document where docID=?";
+        $sql = "select count(*) from ElectronicDocCopies where docID=?";
         $query = $con->prepare($sql);
         $query->execute(array(str_replace('"','',$_GET['book'])));
-        if ($query->rowCount()<=1) { # single user
+        if ($query->fetchColumn()<=1) { # single user
             $sql = "delete from ElectronicDoc where docID=?";
             $query = $con->prepare($sql);
             $query->execute(array(str_replace('"','',$_GET['book'])));
@@ -85,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
             $query->execute(array(str_replace('"','',$_GET['book'])));
         }
     }
-   header("location:personalLibrary.php");
+    header("location:personalLibrary.php");
 } else { //method is GET
     startblock('header');
         echo "<a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; Document";
@@ -256,6 +298,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                                 echo "<input type='submit' name='apply' value='Apply changes'/>";
                                 echo "<input type='submit' name='discard' value='Discard changes'/>";
                             }
+                        echo "</form>";
+                        echo "<form method='post' >";
+                            echo "<input type='submit' name='delete' value='Delete Document'/>";                            
                         echo "</form>";
                     }
                 }
