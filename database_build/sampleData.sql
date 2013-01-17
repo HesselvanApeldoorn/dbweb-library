@@ -1,6 +1,6 @@
 INSERT INTO User VALUES('sample@hotmail.com', 'user1', '9ec62c20118ff506dac139ec30a521d12b9883e55da92b7d9adeefe09ed4e0bd152e2a099339871424263784f8103391f83b781c432f45eccb03e18e28060d2f');
-INSERT INTO User VALUES('sample2@hotmail.com', 'user2', 'user2');
-INSERT INTO User VALUES('sample3@hotmail.com', 'user3', 'user3');
+INSERT INTO User VALUES('sample2@hotmail.com', 'user2', '9ec62c20118ff506dac139ec30a521d12b9883e55da92b7d9adeefe09ed4e0bd152e2a099339871424263784f8103391f83b781c432f45eccb03e18e28060d2f');
+INSERT INTO User VALUES('sample3@hotmail.com', 'user3', '9ec62c20118ff506dac139ec30a521d12b9883e55da92b7d9adeefe09ed4e0bd152e2a099339871424263784f8103391f83b781c432f45eccb03e18e28060d2f');
 
 INSERT INTO PreferredCategory VALUES('sample@hotmail.com', 'fantasy');
 INSERT INTO PreferredCategory VALUES('sample@hotmail.com', 'comedy');
@@ -74,9 +74,9 @@ INSERT INTO DocCategory VALUES(12, 'action');
 
 
 INSERT INTO Loaning VALUES(1, 2, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
-INSERT INTO Loaning VALUES(2, 3, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');
-INSERT INTO Loaning VALUES(3, 12, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
-INSERT INTO Loaning VALUES(4, 9, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');
-INSERT INTO Loaning VALUES(5, 11, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+INSERT INTO Loaning VALUES(2, 3, '20110921', '20100821', 'sample2@hotmail.com', 'sample@hotmail.com');
+INSERT INTO Loaning VALUES(3, 12, '20110921', '20100821', 'sample3@hotmail.com', 'sample@hotmail.com');
+INSERT INTO Loaning VALUES(4, 9, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
+INSERT INTO Loaning VALUES(5, 11, '20110921', '20100821', 'sample2@hotmail.com', 'sample3@hotmail.com');
 INSERT INTO Loaning VALUES(6, 10, '20110921', '20100821', 'sample@hotmail.com', 'sample2@hotmail.com');
 
