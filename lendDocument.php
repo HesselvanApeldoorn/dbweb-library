@@ -40,7 +40,7 @@ endblock() ?>
                     header("location:loanings.php");
                 }
             } else { # method is GET
-                $sql = "select PaperDoc.docID from PaperDoc left join Loaning on PaperDoc.docID=Loaning.docID where email=? and (end_date is null or (start_date >= CURRENT_TIMESTAMP and end_date <= CURRENT_TIMESTAMP))";
+                $sql = "select * from PaperDoc left join Document on PaperDoc.docID=Document.docID where PaperDoc.docID not in (select docID from Loaning where start_date <= CURRENT_TIMESTAMP and end_date >= CURRENT_TIMESTAMP) and visible=1 and email=?";
                 $query = $con->prepare($sql);
                 $query->execute(array($_SESSION['email']));
                 if($query->rowCount()>0) {

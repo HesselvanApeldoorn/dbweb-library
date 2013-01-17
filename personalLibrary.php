@@ -7,6 +7,11 @@ endblock() ?>
   echo "<div class='main'>";
         echo "<div class='blockHeader'> <h2>Personal Library</h2></div>";
         echo "<div class='blockContent'>";
+
+            echo "<form method='get' action='newDocument.php'>";
+                echo "<input type='submit' value='Upload new Document'/>";
+            echo "</form><hr/>";
+
             $query = $con->prepare("select Document.* from Document
                 join PaperDoc on (Document.docID=PaperDoc.docID) where PaperDoc.email='{$_SESSION['email']}' union
                 select Document.* from Document
@@ -40,10 +45,6 @@ endblock() ?>
             } else { //No documents
                 echo "There are no documents currently.";
             }
-            echo "<hr/><form method='get' action='newDocument.php'>";
-                echo "<input type='submit' value='Upload new Document' />";
-            echo "</form";
-
         echo "</div>";
     echo "</div>";
 
