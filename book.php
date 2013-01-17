@@ -257,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                                     echo "This book has been lent out.";
                                 } else {
                                     if($ownBook) {
-                                        echo "<a href='lentDocument.php?docID={$_GET['book']}'>lent Book to someone</a>";                                    
+                                        echo "<a href='lendDocument.php?docID={$_GET['book']}'>lend Book to someone</a>";                                    
                                     } else {
                                         echo "<a href='borrowDocument.php?docID={$_GET['book']}'>borrow Book </a>";                                    
                                     }
@@ -299,9 +299,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST' and isset($_REQUEST['discard'])) {
                                 echo "<input type='submit' name='discard' value='Discard changes'/>";
                             }
                         echo "</form>";
-                        echo "<form method='post' >";
-                            echo "<input type='submit' name='delete' value='Delete Document'/>";                            
-                        echo "</form>";
+                        if ($ownBook) {
+                            echo "<form method='post' >";
+                                echo "<input type='submit' name='delete' value='Delete Document'/>";                            
+                            echo "</form>";
+                        }
                     }
                 }
             echo "</div>";
