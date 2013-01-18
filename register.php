@@ -17,7 +17,7 @@
                 die();
             }
             if($_SERVER['REQUEST_METHOD']=='POST') {
-                 if(!isset($_REQUEST['user_name']) || $_REQUEST['user_name']=='') {
+                 if(!isset($_REQUEST['user_name']) || $_REQUEST['user_name']=='' || ctype_space($_REQUEST['user_name'])) {
                     header("Location: register.php?error=invalid_username&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
                 } elseif($_REQUEST['password']!=$_REQUEST['rePassword']) { #the password is not typed twice
                     header("Location: register.php?error=different_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");

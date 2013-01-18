@@ -45,7 +45,7 @@ endblock() ?>
                             <option value='isbn' $options[3]>ISBN</option>
                             <option value='description' $options[4]>Description</option>
                             <option value='category' $options[5]>Category</option>
-                            <option value='prefCategory' $options[6] onclick='enable(1);'>Preferred Category...</option>
+                            <option value='prefCategory' $options[6]>Preferred Category...</option>
                         </select>";
                     if($selected!='prefCategory') {
                         echo "<div id='userPref' style='display: none'>";
