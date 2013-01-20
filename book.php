@@ -11,11 +11,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $name = $query->fetch();
         startblock('header');
             echo "<a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; <a href='book.php?book={$_GET['book']}'>{$name['document_name']}</a> &raquo; Delete document";
-        endblock(); 
+        endblock();
         startblock('content');
             echo "<div class='main'>";
                 echo "<div class='blockHeader'> <h2>Delete: {$name['document_name']}</h2></div>";
-                echo "<div class='blockContent'>";                  
+                echo "<div class='blockContent'>";
                     echo "You have requested to delete {$name['document_name']}. Are you really really really sure this is what you want?";
                     echo "<form method='post'>";
                         echo "<input type='hidden' name='book' value='{$_GET['book']}'/>";
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         $_SESSION['visible'] = $_REQUEST['visible'];
         $_SESSION['state'] = $_REQUEST['state'];
         $_SESSION['distributable'] = $_REQUEST['distributable'];
-        
+
         #invalid document name
         if(!isset($_REQUEST['document_name']) || $_REQUEST['document_name']=='' || ctype_space($_REQUEST['document_name'])) {
             $_SESSION['error'] = 'document_name';
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             header("location:book.php?book={$_REQUEST['book']}");
             return 0;
         }
-        
+
         #UPDATE DOCUMENT
         if ($_REQUEST['visible']=='visible') {
             $visible=1;
@@ -114,12 +114,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
             $sql = "update PaperDoc set state=? where docID=?";
             $query = $con->prepare($sql);
             $query->execute(array($_REQUEST['state'], $_GET['book']));
-            
+
             #Delete every category related to the current document
             $sql = "delete from DocCategory where docID=?";
             $query = $con->prepare($sql);
             $query->execute(array($paperDoc['docID']));
-            
+
             #insert new categories to the current document
             $categories = $_REQUEST['category'];
             foreach($categories as $category) {
@@ -178,9 +178,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                 $query->execute(array(str_replace('"','',$_GET['book'])));
             }
         }
-        
+
         unsetSessionVar(); #unset session variables. They're not needed, the info is stored
-        
+
         header("location:personalLibrary.php");
     }
 } else { //method is GET
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
     startblock('header');
         echo "<a href='index.php'>Home</a> &raquo; <a href='personalLibrary.php'>Personal Library</a> &raquo; {$book['document_name']}";
     endblock();
-    
+
     startblock('content');
 
         $query = $con->prepare($sql);
@@ -255,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                                     $isbn = $_SESSION['isbn'];
                                 } else {
                                     $isbn = $book['isbn'];
-                                }                            
+                                }
                                 echo "<input type='text' name='isbn' value='$isbn'/>";
                             } else {
                                 echo $book['isbn'];
@@ -268,12 +268,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                             $query = $con->prepare($sql);
                             $query->execute(array($_GET['book']));
                             echo "<h4>Categories<hr/></h4>";
-                            
+
                             if(isset($_SESSION['error']) && $_SESSION['error']=='category') {
                                 echo "<div style='color: red' class='error'>At least one category has to be chosen</div>";
                                 unset($_SESSION['error']);
                             }
-                            
+
                             $categories = array("action","fantasy","fiction","romance", "comedy","adventure", "non-fiction", "education", "religious","detective");
                             echo "<table border='0'>";
                                 echo "<tr>";
@@ -331,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                             }
                             if (isset($paperDoc['docID'])) { #paper doc
                                 echo "<h4>Quality<hr/></h4>";
-                                
+
                                 if(isset($_SESSION['state'])) {
                                     $state = $_SESSION['state'];
                                 } else {
@@ -364,9 +364,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                                     echo "<font color='red'>This book has been lent out.</font>";
                                 } else {
                                     if($ownBook) {
-                                        echo "<a href='lendDocument.php?docID={$_GET['book']}'>lend Book to someone</a>";                                    
+                                        echo "<a href='lendDocument.php?docID={$_GET['book']}'>lend Book to someone</a>";
                                     } else {
-                                        echo "<a href='borrowDocument.php?docID={$_GET['book']}'>borrow Book </a>";                                    
+                                        echo "<a href='borrowDocument.php?docID={$_GET['book']}'>borrow Book </a>";
                                     }
                                 }
                             } else { #electronic doc
@@ -385,7 +385,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                                     } else { #get info out the table
                                         $distributable = $electronicDoc['distributable'];
                                     }
-                                    
+
                                     if ($distributable) {
                                         $distChecked = 'checked';
                                         $notDistChecked = '';
@@ -418,10 +418,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                         echo "</form>";
                         if ($ownBook) {
                             echo "<form method='post' >";
-                                echo "<input type='submit' name='delete' value='Delete Document'/>";                            
+                                echo "<input type='submit' name='delete' value='Delete Document'/>";
                             echo "</form>";
                         }
-                        
                         unsetSessionVar(); #unset session variables. They're not needed here and user could've closed the page.
                     }
                 }

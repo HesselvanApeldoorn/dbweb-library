@@ -10,9 +10,6 @@ try {
         echo "Could not connect to database.";
         die();
 }
-?>
-
-<?php
 $id    = $_GET['id'];
 $sql = "SELECT * FROM ElectronicDocCopies WHERE docID = ? and email = ?";
 $query = $con->prepare($sql);
