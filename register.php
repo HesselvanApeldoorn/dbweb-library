@@ -103,8 +103,9 @@
 <?php
 function send_mail() {
     $message = "Dear {$_REQUEST['user_name']},\n\nTo activate your library account, please click on this link:\n";
-    $url = str_replace(curPageName(),"",curPageUrl());
-
+    $page = substr(curPageURL(), 0, strpos(curPageURL(),"?")); # delete everything right of ? 
+    $url = str_replace(curPageName(),"",$page);
+    
     $message .= $url . 'activate.php?email=' . urlencode($_REQUEST['email']) . "&confirm_code={$_SESSION['confirm_code']} \n\n Kind regards,\n\n The libdev team";
     mail($_REQUEST['email'], 'Registration Confirmation', $message, 'From:no-reply@libDev.com');
 
