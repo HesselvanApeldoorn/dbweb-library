@@ -85,7 +85,10 @@ endblock() ?>
                 } elseif($selected=='category') {// the user searches on category
                     $sql = "select * from Document inner join (select docID, GROUP_CONCAT(category separator ', ')  as categoryConcat from DocCategory group by docID) as CAT on Document.docID=CAT.docID where CAT.categoryConcat like ? AND visible=1";
                 } elseif($selected=='prefCategory') {
-                    $sql = "select * from Document inner join (select docID,GROUP_CONCAT(catConcat separator ', ') as categoryConcat from (select docID, pcat,GROUP_CONCAT(dcat separator ', ') as catConcat from (select docID, PreferredCategory.category as pcat, DocCategory.category as dcat from PreferredCategory inner join DocCategory on PreferredCategory.category=DocCategory.category where PreferredCategory.email=?) as CombCat group by docID,pcat ) as test group by docID) as allDoc on allDoc.docID=Document.docID where concat(categoryConcat, document_name, author, description, ifnull(isbn, '')) like ? AND visible = 1";
+                    $sql = "select * from (select *, Pref.PrefCatDocID as PrefDocId from Document inner join (select docID as PrefCatDocID from PreferredCategory inner join DocCategory on PreferredCategory.category=DocCategory.category where PreferredCategory.email=? group by docID) as Pref on Document.docID= Pref.PrefCatDocID) as PrefDoc inner join (select DocCategory.docID as catDocID, GROUP_CONCAT(category separator ', ')  as categoryConcat from DocCategory group by docID) as CAT on PrefDoc.PrefCatDocID=CAT.catDocID  where Visible=1 and concat(categoryConcat, document_name, author, description, ifnull(isbn, '')) like ?";
+                    /*
+                    The query first selects the docIDs that match the preferred categories. Then it selects those IDs from Document. Now we have a table from Document with IDs which categories match the preferred categoires. Next it combines this table with docCategories (with concatted categories->1 row for 1 document) so the result is a table that has All the info from Document and DocCategory and from this table the rows will be selected which match the search string 
+                    */
                 } else {
                     echo "Hacking attempt";
                     endblock();
