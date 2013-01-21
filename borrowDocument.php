@@ -54,6 +54,7 @@ endblock() ?>
                     $sql = "insert into Notification (email, message, notify_date) values(?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array($selectedPaper['email'],"$user_name has requested a loaning. Document: {$selectedDoc['document_name']}. Requested start date: {$_REQUEST['start']}. Requested end date: {$_REQUEST['end']}.", date("Y-m-d H:i:s")));
+                    $_SESSION['confirm']="You succesfully requested a loaning.";
                     header("location:loanings.php");
                 }
             } else { # method is GET

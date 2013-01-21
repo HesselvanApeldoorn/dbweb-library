@@ -37,6 +37,7 @@ endblock() ?>
                     $sql = "insert into Loaning (docID, start_date, end_date, fromUser, toUser) values(?,?,?,?,?)";
                     $query = $con->prepare($sql);
                     $query->execute(array($_REQUEST['docID'], $_REQUEST['start'], $_REQUEST['end'], $_SESSION['email'], $_REQUEST['toUser']));
+                    $_SESSION['confirm']='You succesfully lent a Document';
                     header("location:loanings.php");
                 }
             } else { # method is GET

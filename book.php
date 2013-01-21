@@ -3,6 +3,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD']=='POST') {
     if(isset($_REQUEST['discard'])) {
+        $_SESSION['confirm']='Discarded changes';
         header("location:personalLibrary.php");
     } elseif(isset($_REQUEST['delete'])) { # confirm delete document
         $sql = "select document_name from Document where docID=?";
@@ -68,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                 $query->execute(array(str_replace('"','',$_REQUEST['book'])));
             }
         }
+        $_SESSION['confirm']='Deleted the document.';
         header("location:personalLibrary.php");
     } else {
 
@@ -180,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         }
 
         unsetSessionVar(); #unset session variables. They're not needed, the info is stored
-
+        $_SESSION['confirm']="Succesfully applied changes to document.";
         header("location:personalLibrary.php");
     }
 } else { //method is GET

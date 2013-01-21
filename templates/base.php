@@ -33,6 +33,12 @@ try {
             <?php endblock() ?>
             <a id='logout' href='logout.php'>Log out</a>
         </div>
+        <div class='confirm'>
+            <?php if (isset($_SESSION['confirm'])) {
+                echo $_SESSION['confirm'];
+                unset($_SESSION['confirm']);
+            } ?>
+        </div>
 
         <div class='container'>
             <div class='menu'>

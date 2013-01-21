@@ -20,6 +20,12 @@ body {
     float: right;
 }
 
+.confirm {
+    color: red;
+    font-size: 130%;
+    text-align: center;
+}
+
 /*********** Menu styling ***********/
 
 .menu {
