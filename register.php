@@ -16,33 +16,43 @@
                 echo "Could not connect to database.";
                 die();
             }
+            
             if($_SERVER['REQUEST_METHOD']=='POST') {
-                 if(!isset($_REQUEST['user_name']) || $_REQUEST['user_name']=='' || ctype_space($_REQUEST['user_name'])) {
-                    header("Location: register.php?error=invalid_username&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                unset($_SESSION['error']);
+                $sql = "select count(*) from User where email=?";
+                $q = $con->prepare($sql);
+                $q->execute(array($_REQUEST['email']));
+                if($q->fetchColumn()!=0) {#email already exists
+                    $_SESSION['error'] = 'existing_email';
+                    header("Location: register.php?email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                    return 0;
+                } elseif (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) { #validate email
+                    $_SESSION['error'] = 'invalid_email';
+                    header("Location: register.php?email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                    return 0;
+                } elseif (!isset($_REQUEST['user_name']) || $_REQUEST['user_name']=='' || ctype_space($_REQUEST['user_name'])) {
+                    $_SESSION['error'] = 'invalid_username';
+                    header("Location: register.php?email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                    return 0;
+                } elseif (!passRequirements($_REQUEST['password'])) { #password requirements
+                    $_SESSION['error'] = 'invalid_password';
+                    header("Location: register.php?email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                    return 0;
                 } elseif($_REQUEST['password']!=$_REQUEST['rePassword']) { #the password is not typed twice
-                    header("Location: register.php?error=different_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                    $_SESSION['error'] = 'different_password';
+                    header("Location: register.php?email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
+                    return 0;
                 } else {
-                    $sql = "select count(*) from User where email=?";
+                    $sql = "INSERT INTO User (email,user_name,password) VALUES (?,?,?)";
                     $q = $con->prepare($sql);
-                    $q->execute(array($_REQUEST['email']));
-                    if($q->fetchColumn()!=0) {#email already exists
-                        header("Location: register.php?error=existing_email&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
-                    } elseif (!filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL)) { #validate email
-                        header("Location: register.php?error=invalid_email&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
-                    } elseif (!passRequirements($_REQUEST['password'])) { #password requirements
-                        header("Location: register.php?error=incorrect_password&email={$_REQUEST['email']}&user_name={$_REQUEST['user_name']}");
-                    } else {
-                        $sql = "INSERT INTO User (email,user_name,password) VALUES (?,?,?)";
-                        $q = $con->prepare($sql);
-                        $q->execute(array($_REQUEST['email'],$_REQUEST['user_name'], hash("sha512",$_REQUEST['password'])));
-                        $confirm_code = md5(uniqid(rand()));
-                        $_SESSION['confirm_code'] = $confirm_code;
-                        $_SESSION['regEmail'] = $_REQUEST['email'];
-                        $_SESSION['confirmed'] = false;
-                        send_mail($_REQUEST['email'], $confirm_code);
-                        echo "A confirmation link has been sent to your email account";
-                    }
-                }
+                    $q->execute(array($_REQUEST['email'],$_REQUEST['user_name'], hash("sha512",$_REQUEST['password'])));
+                    $confirm_code = md5(uniqid(rand()));
+                    $_SESSION['confirm_code'] = $confirm_code;
+                    $_SESSION['regEmail'] = $_REQUEST['email'];
+                    $_SESSION['confirmed'] = false;
+                    send_mail();
+                    echo "A confirmation link has been sent to your email account";
+                }    
             } else {
                 echo "<div class='accountContainer'>";
                     echo "<div class='account'>";
@@ -50,20 +60,19 @@
                                 <h2>Registration</h2>
                               </div>";
                         echo "<div class='accountContent'>";
-                            if(isset($_REQUEST['error'])) {
-                                if($_REQUEST['error']=='existing_email') {
+                            if(isset($_SESSION['error'])) {
+                                if($_SESSION['error']=='existing_email') {
                                     echo "<div style='color: red' class='error'>Email already exists</div>";
-                                } elseif($_REQUEST['error']=='invalid_email') {
+                                } elseif($_SESSION['error']=='invalid_email') {
                                     echo "<div style='color: red' class='error'>Invalid email</div>";
-                                } elseif($_REQUEST['error']=='invalid_username') {
+                                } elseif($_SESSION['error']=='invalid_username') {
                                     echo "<div style='color: red' class='error'>Invalid username</div>";
-                                } elseif($_REQUEST['error']=='incorrect_password') {
+                                } elseif($_SESSION['error']=='invalid_password') {
                                     echo "<div style='color: red' class='error'>Password should be at least 8 characters long, contain at least 1 capital, 1 lower case letter and 1 digit. Special characters aren't allowed</div>";
-                                } elseif($_REQUEST['error']=='different_password') {
+                                } elseif($_SESSION['error']=='different_password') {
                                     echo "<div style='color: red' class='error'>Passwords are different</div>";
                                 }
-                            } elseif(isset($_REQUEST['email']) || isset($_REQUEST['user_name'])) {
-                                echo "<div style='color: red' class='error'>Incorrect account credentials</div>";
+                                unset($_SESSION['error']);
                             }
                             echo "<form method = 'post'>";
                                 echo "<table id='nonborder'";
@@ -103,9 +112,9 @@
 <?php
 function send_mail() {
     $message = "Dear {$_REQUEST['user_name']},\n\nTo activate your library account, please click on this link:\n";
-    $page = substr(curPageURL(), 0, strpos(curPageURL(),"?")); # delete everything right of ? 
+    $page = substr(curPageURL(), 0, strpos(curPageURL(),"?"));
     $url = str_replace(curPageName(),"",$page);
-    
+
     $message .= $url . 'activate.php?email=' . urlencode($_REQUEST['email']) . "&confirm_code={$_SESSION['confirm_code']} \n\n Kind regards,\n\n The libdev team";
     mail($_REQUEST['email'], 'Registration Confirmation', $message, 'From:no-reply@libDev.com');
 
