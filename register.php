@@ -50,6 +50,7 @@
                     $_SESSION['confirm_code'] = $confirm_code;
                     $_SESSION['regEmail'] = $_REQUEST['email'];
                     $_SESSION['confirmed'] = false;
+                    $_SESSION['confirm_time'] = time();
                     send_mail();
                     echo "A confirmation link has been sent to your email account";
                 }    
@@ -112,10 +113,11 @@
 <?php
 function send_mail() {
     $message = "Dear {$_REQUEST['user_name']},\n\nTo activate your library account, please click on this link:\n";
-    $page = substr(curPageURL(), 0, strpos(curPageURL(),"?"));
+    $currentUrl = curPageURL() ."?"; #add a ? to the end otherwise the code below doesn't work if the user has made no error 
+    $page = substr($currentUrl, 0, strpos($currentUrl,"?"));
     $url = str_replace(curPageName(),"",$page);
 
-    $message .= $url . 'activate.php?email=' . urlencode($_REQUEST['email']) . "&confirm_code={$_SESSION['confirm_code']} \n\n Kind regards,\n\n The libdev team";
+    $message .= $url . 'activate.php?email=' . urlencode($_REQUEST['email']) . "&confirm_code={$_SESSION['confirm_code']} \n This link will be active for one hour. When the link expires you have to register again. \n\n Kind regards,\n\n The libdev team";
     mail($_REQUEST['email'], 'Registration Confirmation', $message, 'From:no-reply@libDev.com');
 
 }

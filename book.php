@@ -3,7 +3,11 @@
 <?php
 if ($_SERVER['REQUEST_METHOD']=='POST') {
     if(isset($_REQUEST['discard'])) {
-        $_SESSION['confirm']='Discarded changes';
+        $sql = "select document_name from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+        $name = $query->fetch();
+        $_SESSION['confirm']= "Discarded changes to " . $name['document_name'];
         header("location:personalLibrary.php");
     } elseif(isset($_REQUEST['delete'])) { # confirm delete document
         $sql = "select document_name from Document where docID=?";
@@ -69,7 +73,22 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                 $query->execute(array(str_replace('"','',$_REQUEST['book'])));
             }
         }
-        $_SESSION['confirm']='Deleted the document.';
+        $sql = "select document_name from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+        $name = $query->fetch();
+        $_SESSION['confirm']="Deleted " . $name['document_name'];
+        header("location:personalLibrary.php");
+    } elseif(isset($_REQUEST['share'])) {
+        $sql = "insert into ElectronicDocCopies values(?,?)";
+        $query = $con->prepare($sql);
+        $query->execute(array($_SESSION['email'],str_replace('"','',$_REQUEST['book'])));
+
+        $sql = "select document_name from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+        $name = $query->fetch();
+        $_SESSION['confirm']="Added " .$name['document_name']. " to your library";
         header("location:personalLibrary.php");
     } else {
 
@@ -182,7 +201,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
         }
 
         unsetSessionVar(); #unset session variables. They're not needed, the info is stored
-        $_SESSION['confirm']="Succesfully applied changes to document.";
+
+        $sql = "select document_name from Document where docID=?";
+        $query = $con->prepare($sql);
+        $query->execute(array(str_replace('"','',$_REQUEST['book'])));
+        $name = $query->fetch();
+        $_SESSION['confirm']="Succesfully applied changes to " . $name['document_name'];
         header("location:personalLibrary.php");
     }
 } else { //method is GET
@@ -410,6 +434,9 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                                     echo "Download: <a href='download.php?id=".$id."'>{$book['document_name']}</a>";
                                 } else {
                                     echo "This document is not open for distribution.";
+                                }
+                                if($electronicDoc['distributable'] && !$ownBook) {
+                                    echo "<input type='submit' name='share' value='Get in your library'/>";
                                 }
                             }
                             echo "<hr/>";

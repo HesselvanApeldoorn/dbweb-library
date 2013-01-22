@@ -47,7 +47,7 @@
                                 if($_REQUEST['activate']=='success') {
                                     echo "<div style='color: red' class='error'>Your account has been activated succesfully</div>";   
                                 } elseif($_REQUEST['activate']=='already_confirmed') {
-                                    echo "<div style='color: red' class='error'>Your account is already activated</div>";   
+                                    echo "<div style='color: red' class='error'>Your account is already activated or the activation link is expired. In the latter case you have to register again</div>";   
                                 } elseif($_REQUEST['activate']=='not_activated') {
                                     echo "<div style='color: red' class='error'>Your account has not been activated yet. You should've received an activation email</div>";   
                                 }
