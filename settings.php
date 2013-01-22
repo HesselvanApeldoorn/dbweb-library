@@ -231,7 +231,10 @@ if($_SERVER['REQUEST_METHOD']=='POST') { # a submit button has been clicked
 
 function send_mailPasswordChange($user_name) {
     $message = "Dear $user_name, \n\nYour password has been changed. If you ever lose your password you can ask for a new password on the following link:\n";
-    $url = str_replace(curPageName(),"",curPageUrl());
+
+    $currentUrl = curPageURL() ."?"; #add a ? to the end otherwise the code below doesn't work if the user has made no error 
+    $page = substr($currentUrl, 0, strpos($currentUrl,"?"));
+    $url = str_replace(curPageName(),"",$page);
 
     $message .= $url . 'forgotPw.php?email='. urlencode($_SESSION['email'])." \n\n Kind regards,\n\n The libdev team";
     mail($_SESSION['email'], 'Password change', $message, 'From:no-reply@libDev.com');
@@ -239,7 +242,10 @@ function send_mailPasswordChange($user_name) {
 
 function send_mailDeleteAccount($user_name) {
     $message = "Dear $user_name, \n\nYou have deleted your account. If you ever regret this decision, you can register again at:\n";
-    $url = str_replace(curPageName(),"",curPageUrl());
+
+    $currentUrl = curPageURL() ."?"; #add a ? to the end otherwise the code below doesn't work if the user has made no error 
+    $page = substr($currentUrl, 0, strpos($currentUrl,"?"));
+    $url = str_replace(curPageName(),"",$page);
 
     $message .= $url . 'register.php?error=no_error&email='. urlencode($_SESSION['email']).'&user_name='.urlencode($user_name)." \n\n Kind regards,\n\n The libdev team";
     mail($_SESSION['email'], 'Account deletion', $message, 'From:no-reply@libDev.com');

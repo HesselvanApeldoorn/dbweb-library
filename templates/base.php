@@ -5,6 +5,11 @@
 ?>
 <?php
 session_start();
+if (isset($_SESSION['LAST_ACTIVITY']) && (time()-$_SESSION['LAST_ACTIVITY'] > 604800)) { #week of inactivity
+    session_unset();     // unset $_SESSION variable for the runtime 
+    session_destroy();   // destroy session data in storage
+}
+$_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp 
 if  (!isset($_SESSION["email"])) {
     header("location:login.php");
 }
