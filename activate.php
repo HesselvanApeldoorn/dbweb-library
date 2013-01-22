@@ -1,7 +1,5 @@
 <?php
     require '../../libConfig.php';
-    error_reporting(-1);
-    ini_set("display_errors", 1);
     session_start();
     try {
         $con = new PDO("mysql:dbname=$db;host=$host", $username, $password);
