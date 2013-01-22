@@ -436,11 +436,35 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
                                     echo "This document is not open for distribution.";
                                 }
                                 if($electronicDoc['distributable'] && !$ownBook) {
-                                    echo "<input type='submit' name='share' value='Get in your library'/>";
+                                    echo "<br/><input type='submit' name='share' value='Get in your library'/>";
                                 }
                             }
-                            echo "<hr/>";
+                            echo "<h4>Documents you might be interested in<hr/></h4>";
+                                $sql=" select * from Document inner join (select docID as concatID from (select * from DocCategory where category like (select category from DocCategory where docID=? limit 1)) as selectedCat) as matches on Document.docID=matches.concatID where visible = 1 and docID!=? limit 10";
+                                $query = $con->prepare($sql);
+                                $query->execute(array($_GET['book'], $_GET['book'])); 
+                                if($query->rowCount()>0) {
+                                    echo "<table>";
+                                        echo "<th> Name</th>";
+                                        echo "<th> Author</th>";
+                                        $i=0;
+                                        foreach($query as $document) {
+                                            $i = $i+1;
+                                            $i=$i%2;
+                                            $idvar = 'even';
+                                            if ($i==0) {
+                                                $idvar='odd';
+                                            }
+                                            echo "<tr id='$idvar' ><td><a href='book.php?book={$document['docID']}'>{$document['document_name']}</a></td>";
+                                            echo "<td>{$document['author']}</td>";
+                                            echo "</tr>";
+                                        }
+                                    echo "</table>";
+                                } else {
+                                    echo "No resembling books";
+                                }
                             if ($ownBook) {
+                                echo "<h4>Change<hr/></h4>";
                                 echo "<input type='submit' name='apply' value='Apply changes'/>";
                                 echo "<input type='submit' name='discard' value='Discard changes'/>";
                             }
